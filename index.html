@@ -1,6 +1,11 @@
 <!doctype html>
 <html lang="uk">
 <head>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png?v=2">
+  <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png?v=2">
+  <link rel="icon" type="image/png" sizes="512x512" href="icon-512.png?v=2">
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#f2f2f7">
@@ -54,9 +59,15 @@ body[data-theme="dark"]{--bg:#15161a;--card:#22242a;--text:#f4f4f5;--muted:#a1a1
     </div>
     <div id="cloudLogin" style="margin-top:12px">
       <label for="cloudEmail">Електронна пошта</label>
-      <input id="cloudEmail" type="email" autocomplete="email" placeholder="name@example.com">
-      <div class="actions"><button class="primary" type="button" onclick="cloudSignIn()">Отримати посилання для входу</button></div>
-      <p class="note">Відкрий посилання з листа на кожному пристрої. Використовуй ту саму електронну адресу.</p>
+      <input id="cloudEmail" type="email" autocomplete="username" placeholder="name@example.com">
+      <label for="cloudPassword">Пароль</label>
+      <input id="cloudPassword" type="password" autocomplete="current-password" placeholder="Введи пароль">
+      <div class="actions" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px">
+        <button class="primary" type="button" onclick="cloudPasswordSignIn()">Увійти</button>
+        <button class="secondary" type="button" onclick="cloudSignUp()">Створити акаунт</button>
+      </div>
+      <button class="secondary" style="margin-top:8px" type="button" onclick="cloudResetPassword()">Забула пароль?</button>
+      <p class="note">Вхід за паролем працює безпосередньо в браузері та з іконки на головному екрані iPhone. Використовуй той самий акаунт на всіх пристроях.</p>
     </div>
     <div id="cloudLogout" style="display:none;margin-top:12px"><button class="secondary" type="button" onclick="cloudSignOut()">Вийти з облікового запису</button></div>
   </section>
@@ -229,6 +240,9 @@ body[data-theme="dark"]{--bg:#15161a;--card:#22242a;--text:#f4f4f5;--muted:#a1a1
 <script>
 const KEY='myVocabularyNotesV1';
 const META='myVocabularyNotesV2meta';
+const DELETED_KEY='myVocabularyDeletedWordIdsV1';
+let deletedWordIds=[];
+try{deletedWordIds=JSON.parse(localStorage.getItem(DELETED_KEY)||'[]');if(!Array.isArray(deletedWordIds))deletedWordIds=[]}catch(e){deletedWordIds=[]}
 let words=[],meta={tests:0,knownIds:[],reviewIds:[]},activePack=null,packFilter='all',customPacks=[],cardItems=[],cardIndex=0,cardRevealed=false,quiz=[],quizIndex=0,quizScore=0,quizAnswered=false;
 try{words=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(words))words=[]}catch(e){words=[]}
 try{meta={...meta,...JSON.parse(localStorage.getItem(META)||'{}')}}catch(e){}
@@ -287,29 +301,48 @@ function cloudUi(message,badge,logged=false){
   document.getElementById('cloudLogin').style.display=logged?'none':'block';
   document.getElementById('cloudLogout').style.display=logged?'block':'none';
 }
-async function cloudSignIn(){
+async function cloudPasswordSignIn(){
+  const email=document.getElementById('cloudEmail').value.trim(),password=document.getElementById('cloudPassword').value;
+  if(!email||!password){alert('Введи електронну пошту та пароль');return}
+  if(!sb){alert('Не завантажилася бібліотека синхронізації. Онови сторінку.');return}
+  cloudUi('Виконується вхід…','Очікування');
+  const {error}=await sb.auth.signInWithPassword({email,password});
+  if(error){cloudUi('Не вдалося увійти: '+error.message,'Помилка');return}
+}
+async function cloudSignUp(){
+  const email=document.getElementById('cloudEmail').value.trim(),password=document.getElementById('cloudPassword').value;
+  if(!email||password.length<8){alert('Введи пошту та пароль довжиною щонайменше 8 символів');return}
+  const {data,error}=await sb.auth.signUp({email,password,options:{emailRedirectTo:'https://ashyttkova-png.github.io/my-vocabulary/'}});
+  if(error){cloudUi('Не вдалося створити акаунт: '+error.message,'Помилка');return}
+  if(data.session){cloudUser=data.user;cloudUi('Акаунт створено','Підключено',true);await cloudSync()}
+  else cloudUi('Перевір пошту та підтвердь адресу. Потім повернися сюди й увійди за паролем.','Перевір пошту');
+}
+async function cloudResetPassword(){
   const email=document.getElementById('cloudEmail').value.trim();
-  if(!email){alert('Введи електронну пошту');return}
-  if(!sb){alert('Не загрузилась библиотека синхронизации. Обнови страницу.');return}
-  cloudUi('Надсилаю лист…','Ожидание');
-  const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:'https://ashyttkova-png.github.io/my-vocabulary/'}});
-  if(error){cloudUi('Помилка: '+error.message,'Помилка');return}
-  cloudUi('Лист надіслано. Відкрий посилання з листа на цьому пристрої.','Перевір пошту');
+  if(!email){alert('Спочатку введи електронну пошту');return}
+  const {error}=await sb.auth.resetPasswordForEmail(email,{redirectTo:'https://ashyttkova-png.github.io/my-vocabulary/'});
+  if(error){cloudUi('Не вдалося надіслати лист: '+error.message,'Помилка');return}
+  cloudUi('Лист для створення нового пароля надіслано. Відкрий його, задай пароль, а потім увійди тут.','Перевір пошту');
 }
 async function cloudSignOut(){if(sb)await sb.auth.signOut();cloudUser=null;cloudUi('Обліковий запис від’єднано на цьому пристрої.','Не підключено')}
-function cloudRow(w){return {user_id:cloudUser.id,local_id:String(w.id),en:w.en||'',ru:w.ru||'',ipa:w.ipa||'',example:w.example||'',example_ru:w.exampleRu||'',category:w.category||'Загальні слова',source:w.source||'',favorite:!!w.favorite,known:w.status==='known'||w.known===true,created_at:w.createdAt?new Date(Number(w.createdAt)).toISOString():new Date().toISOString(),updated_at:new Date().toISOString()}}
+function cloudRow(w){return {user_id:cloudUser.id,local_id:String(w.id),is_deleted:false,en:w.en||'',ru:w.ru||'',ipa:w.ipa||'',example:w.example||'',example_ru:w.exampleRu||'',category:w.category||'Загальні слова',source:w.source||'',favorite:!!w.favorite,known:w.status==='known'||w.known===true,created_at:w.createdAt?new Date(Number(w.createdAt)).toISOString():new Date().toISOString(),updated_at:new Date().toISOString()}}
 function localRow(r){return {id:String(r.local_id),en:r.en||'',ru:r.ru||'',ipa:r.ipa||'',example:r.example||'',exampleRu:r.example_ru||'',category:r.category||'Загальні слова',source:r.source||'',favorite:!!r.favorite,status:r.known?'known':'new',createdAt:r.created_at?new Date(r.created_at).getTime():Date.now()}}
 async function cloudSync(){
   if(!sb||!cloudUser||syncing)return;
   syncing=true;
   try{
+    if(deletedWordIds.length){
+      const {error:delError}=await sb.from('vocabulary_words').update({is_deleted:true,updated_at:new Date().toISOString()}).eq('user_id',cloudUser.id).in('local_id',deletedWordIds);
+      if(delError)throw delError;
+      deletedWordIds=[];localStorage.setItem(DELETED_KEY,'[]');
+    }
     const {data:remote,error}=await sb.from('vocabulary_words').select('*').eq('user_id',cloudUser.id);
     if(error)throw error;
+    const deletedRemote=new Set((remote||[]).filter(r=>r.is_deleted).map(r=>String(r.local_id)));
+    words=words.filter(w=>!deletedRemote.has(String(w.id)));
     const localMap=new Map(words.map(w=>[String(w.id),w]));
-    const remoteMap=new Map((remote||[]).map(r=>[String(r.local_id),r]));
-    // Keep all local words; bring down any words that exist only in the cloud.
-    for(const r of (remote||[])){if(!localMap.has(String(r.local_id)))words.push(localRow(r))}
-    const payload=words.map(cloudRow);
+    for(const r of (remote||[])){if(!r.is_deleted&&!localMap.has(String(r.local_id)))words.push(localRow(r))}
+    const payload=words.filter(w=>!deletedRemote.has(String(w.id))).map(cloudRow);
     if(payload.length){
       const {error:upError}=await sb.from('vocabulary_words').upsert(payload,{onConflict:'user_id,local_id'});
       if(upError)throw upError;
@@ -333,7 +366,7 @@ async function initCloud(){
   });
 }
 
-function persist(){localStorage.setItem(KEY,JSON.stringify(words));localStorage.setItem(META,JSON.stringify(meta));localStorage.setItem('myVocabularyCustomPacksV1',JSON.stringify(customPacks));renderAll();scheduleCloudSync()}
+function persist(){localStorage.setItem(KEY,JSON.stringify(words));localStorage.setItem(META,JSON.stringify(meta));localStorage.setItem('myVocabularyCustomPacksV1',JSON.stringify(customPacks));localStorage.setItem(DELETED_KEY,JSON.stringify(deletedWordIds));renderAll();scheduleCloudSync()}
 function show(id){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bottom button').forEach(x=>x.classList.toggle('active',x.dataset.view===id));if(id==='cards')resetCards();if(id==='library')renderPacks();renderAll()}
 function addWord(obj){let existing=words.find(w=>w.en.toLowerCase()===obj.en.toLowerCase());if(existing){Object.assign(existing,Object.fromEntries(Object.entries(obj).filter(([k,v])=>v!==''&&v!=null)));return existing}let w={id:Date.now().toString()+Math.random().toString(16).slice(2,6),ru:'',ipa:'',example:'',exampleRu:'',category:'Загальні слова',favorite:false,status:'new',createdAt:Date.now(),...obj};words.unshift(w);return w}
 function quickSave(){let en=document.getElementById('quickEnglish').value.trim();if(!en){alert('Введи слово або фразу');return}let source=document.getElementById('quickSource').value.trim();addWord({en,source,category:source?'Із серіалів і відео':'Загальні слова'});document.getElementById('quickEnglish').value='';document.getElementById('quickSource').value='';persist();alert('Слово збережено ♡');show('words')}
@@ -421,11 +454,11 @@ async function lookupAll(){
 }
 function voiceInput(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('Розпізнавання мовлення недоступне в цьому браузері. Скористайся диктуванням на клавіатурі iPhone.');return}let rec=new SR();rec.lang='en-US';rec.onresult=e=>document.getElementById('quickEnglish').value=e.results[0][0].transcript;rec.onerror=()=>alert('Не вдалося розпізнати слово. Спробуй ще раз.');rec.start()}
 function speak(s){if('speechSynthesis'in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(s);u.lang='en-US';speechSynthesis.speak(u)}}
-function row(w){return `<div class="word-row"><div style="min-width:0;flex:1"><div class="word">${esc(w.en)}</div><div class="translation">${esc(w.ru||'Переклад ще не додано')} ${w.status==='known'?'· ✓ знаю':''}</div></div><div class="row-actions"><button class="icon-btn" title="Відтворити вимову" onclick="speak(${js(w.en)})">🔊</button><button class="icon-btn" title="Редагувати" onclick="editWord('${w.id}')">✎</button><button class="icon-btn" title="Обране" onclick="favorite('${w.id}')">${w.favorite?'★':'☆'}</button></div></div>`}
+function row(w){return `<div class="word-row"><div style="min-width:0;flex:1"><div class="word">${esc(w.en)}</div><div class="translation">${esc(w.ru||'Переклад ще не додано')} ${w.status==='known'?'· ✓ знаю':''}</div></div><div class="row-actions"><button class="icon-btn" title="Відтворити вимову" onclick="speak(${js(w.en)})">🔊</button><button class="icon-btn" title="Редагувати" onclick="editWord('${w.id}')">✎</button><button class="icon-btn" title="Обране" onclick="favorite('${w.id}')">${w.favorite?'★':'☆'}</button><button class="icon-btn" title="Видалити слово" aria-label="Видалити слово" onclick="removeWord('${w.id}')">🗑</button></div></div>`}
 function renderWords(){let q=(document.getElementById('searchAll')?.value||'').toLowerCase();let filtered=words.filter(w=>(w.en+' '+(w.ru||'')+' '+(w.category||'')).toLowerCase().includes(q));document.getElementById('allWords').innerHTML=filtered.length?filtered.map(row).join(''):'<div class="empty">Тут ще немає слів. Додай перше ♡</div>';document.getElementById('recentWords').innerHTML=words.slice(0,4).map(row).join('')||'<div class="empty">Твій словничок чекає перше слово ♡</div>'}
 function editWord(id){let w=words.find(x=>x.id===id);if(!w)return;document.getElementById('english').value=w.en;document.getElementById('ru').value=w.ru||'';document.getElementById('ipa').value=w.ipa||'';document.getElementById('example').value=w.example||'';document.getElementById('exampleRu').value=w.exampleRu||'';document.getElementById('category').value=w.category||'Загальні слова';document.getElementById('source').value=w.source||'';let btn=document.querySelector('#add .primary');btn.textContent='Зберегти зміни';btn.onclick=()=>{w.en=val('english');w.ru=val('ru');w.ipa=val('ipa');w.example=val('example');w.exampleRu=val('exampleRu');w.category=val('category');w.source=val('source');btn.textContent='Зберегти слово';btn.onclick=saveDetailed;persist();show('words')};show('add')}
 function favorite(id){let w=words.find(x=>x.id===id);if(w){w.favorite=!w.favorite;persist()}}
-function removeWord(id){if(confirm('Видалити це слово?')){words=words.filter(x=>x.id!==id);persist()}}
+function removeWord(id){if(!words.some(x=>String(x.id)===String(id)))return;if(confirm('Видалити це слово зі словника на всіх пристроях?')){words=words.filter(x=>String(x.id)!==String(id));if(!deletedWordIds.includes(String(id)))deletedWordIds.push(String(id));persist()}}
 function filterLevel(l){packFilter=packFilter===l?'all':l;renderPacks()}
 function renderPacks(){let q=(document.getElementById('packSearch')?.value||'').toLowerCase();let built=packs.filter(p=>(packFilter==='all'||p.level===packFilter)&&(p.title+' '+p.level+' '+p.type).toLowerCase().includes(q));let own=customPacks.filter(p=>(packFilter==='all'||p.level===packFilter)&&(p.title+' '+p.level+' Власна добірка').toLowerCase().includes(q));let html=[...built.map(p=>`<div class="pack"><div class="pack-icon">${p.icon}</div><div class="pack-info"><strong>${esc(p.title)}</strong><p>${p.level} · ${p.words.length} слів · ${esc(p.type)}</p></div><button class="secondary" onclick="openPack('${p.id}')">Відкрити</button></div>`),...own.map(p=>`<div class="pack"><div class="pack-icon">${p.icon||'📚'}</div><div class="pack-info"><strong>${esc(p.title)}</strong><p>${p.level} · ${p.wordIds.length} моїх слів · Власна добірка</p></div><button class="secondary" onclick="openPack('${p.id}')">Відкрити</button></div>`)].join('');document.getElementById('packList').innerHTML=html||'<div class="empty">Нічого не знайдено</div>'}
 function createCustomPack(){let title=document.getElementById('newPackName').value.trim();if(!title){alert('Введи назву добірки');return}if([...packs,...customPacks].some(p=>p.title.toLowerCase()===title.toLowerCase())){alert('Добірка з такою назвою вже існує');return}let p={id:'custom-'+Date.now().toString(36),title,subtitle:'Твоя особиста добірка',level:document.getElementById('newPackLevel').value,type:'Власна добірка',icon:document.getElementById('newPackIcon').value,wordIds:[]};customPacks.unshift(p);document.getElementById('newPackName').value='';persist();renderPacks();openPack(p.id)}
@@ -458,7 +491,7 @@ function setBackgroundPhoto(event){let file=event.target.files&&event.target.fil
 function clearBackgroundPhoto(){appearance.background='';saveAppearance();applyAppearance();document.getElementById('backgroundPhoto').value='';let status=document.getElementById('backgroundStatus');if(status)status.textContent='Фото фону прибрано.'}
 if(window.matchMedia){window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(appearance.theme==='system')applyAppearance()})}
 function plural(n,forms){let x=n%100;if(x>=11&&x<=19)return forms[2];x=n%10;return x===1?forms[0]:x>=2&&x<=4?forms[1]:forms[2]}
-function exportData(){let data={version:3,exportedAt:new Date().toISOString(),words,meta,customPacks};let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});let url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='my-vocabulary-backup.json';a.click();URL.revokeObjectURL(url)}
+function exportData(){let data={version:4,exportedAt:new Date().toISOString(),words,meta,customPacks,deletedWordIds};let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});let url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='my-vocabulary-backup.json';a.click();URL.revokeObjectURL(url)}
 function importData(e){let file=e.target.files[0];if(!file)return;let r=new FileReader();r.onload=()=>{try{let data=JSON.parse(r.result),incoming=Array.isArray(data)?data:data.words;if(!Array.isArray(incoming))throw Error();let merged=[...words];incoming.forEach(w=>{if(w.en&&!merged.some(x=>x.en.toLowerCase()===w.en.toLowerCase()))merged.push(w)});words=merged;if(data.meta)meta={...meta,...data.meta};if(Array.isArray(data.customPacks))customPacks=data.customPacks;persist();alert('Імпорт завершено. Нові слова додано, дублікати пропущено.')}catch(err){alert('Не вдалося прочитати резервну копію.')}e.target.value=''};r.readAsText(file)}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function js(s){return JSON.stringify(String(s||''))}
