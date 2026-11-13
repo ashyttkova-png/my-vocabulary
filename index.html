@@ -9,7 +9,7 @@
 <meta name="apple-mobile-web-app-title" content="My Vocabulary">
 <title>My Vocabulary</title>
 <style>
-:root{--bg:#f2f2f7;--card:#fff;--text:#171717;--muted:#8e8e93;--yellow:#d69b24;--line:#e5e5ea;--blue:#3478f6;--green:#23834b}
+:root{--bg:#f2f2f7;--card:#fff;--text:#171717;--muted:#8e8e93;--yellow:#d69b24;--line:#e5e5ea;--blue:#3478f6;--green:#23834b;--field:#fff;--soft:#f2f2f7;--navbg:#ffffffed}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
 button,input,textarea,select{font:inherit}button{cursor:pointer;border:0}
 .app{max-width:680px;margin:auto;min-height:100vh;padding:16px 16px calc(105px + env(safe-area-inset-bottom))}
@@ -18,27 +18,28 @@ h1{font-size:32px;letter-spacing:-1px;margin:0 0 5px}h2{font-size:20px;margin:0 
 .card{background:var(--card);border-radius:17px;padding:16px;margin-bottom:12px;box-shadow:0 1px 2px #00000008}
 .stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}.stat-num{font-size:29px;font-weight:700;margin:7px 0 2px}.muted,.note{color:var(--muted);font-size:13px}.note{line-height:1.5;margin-top:10px}
 .accent{color:var(--yellow)}.section-head{display:flex;justify-content:space-between;align-items:center;margin:20px 2px 10px}
-.search,input,textarea,select{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px;background:#fff;color:var(--text);outline:none}
-.search{background:#e5e5ea;border:0;margin-bottom:14px;font-size:16px}
+.search,input,textarea,select{width:100%;border:1px solid var(--line);border-radius:11px;padding:12px;background:var(--field);color:var(--text);outline:none}
+.search{background:var(--soft);border:0;margin-bottom:14px;font-size:16px}
 label{display:block;font-size:13px;color:var(--muted);margin:12px 0 6px}textarea{min-height:70px;resize:vertical}
 button.primary{background:var(--yellow);color:#fff;border-radius:12px;padding:12px 16px;font-weight:650}
-button.secondary{background:#f2f2f7;color:var(--text);border-radius:11px;padding:10px 13px}
+button.secondary{background:var(--soft);color:var(--text);border-radius:11px;padding:10px 13px}
 button.ghost{background:transparent;color:var(--yellow);padding:8px}
 button:disabled{opacity:.45;cursor:not-allowed}
 .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:13px}.full{width:100%}
 .word-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-top:1px solid var(--line);gap:10px}.word-row:first-child{border-top:0}.word{font-weight:700}.translation{font-size:13px;color:var(--muted);margin-top:4px}.row-actions{display:flex;align-items:center;gap:3px}.icon-btn{background:transparent;color:var(--yellow);font-size:19px;padding:5px}
 .empty{text-align:center;padding:26px 10px;color:var(--muted);font-size:14px}
 .view{display:none}.view.active{display:block}
-.bottom{position:fixed;z-index:5;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(18px);border-top:1px solid var(--line);display:flex;justify-content:flex-start;gap:0;padding:8px max(6px,calc((100% - 680px)/2)) calc(8px + env(safe-area-inset-bottom));overflow-x:auto}
+.bottom{position:fixed;z-index:5;bottom:0;left:0;right:0;background:var(--navbg);backdrop-filter:blur(18px);border-top:1px solid var(--line);display:flex;justify-content:flex-start;gap:0;padding:8px max(6px,calc((100% - 680px)/2)) calc(8px + env(safe-area-inset-bottom));overflow-x:auto}
 .bottom button{flex:1 0 66px;min-width:62px;background:none;color:var(--muted);font-size:10px;padding:4px 2px}.bottom button b{display:block;font-size:20px;font-weight:400;margin-bottom:2px}.bottom button.active{color:var(--yellow)}
 .pill{display:inline-block;font-size:11px;background:#fff4d8;color:#93640c;border-radius:20px;padding:5px 9px}
 .levels{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px}.level{border-radius:13px;padding:12px 6px;text-align:center;background:#fff;border:1px solid var(--line);font-weight:750}.level small{display:block;font-size:10px;font-weight:500;color:var(--muted);margin-top:3px}
-.pack{display:flex;gap:12px;align-items:center;padding:13px 0;border-top:1px solid var(--line)}.pack:first-child{border-top:0}.pack-icon{width:46px;height:46px;border-radius:13px;background:#f6f2e8;display:grid;place-items:center;font-size:22px;flex-shrink:0}.pack-info{flex:1;min-width:0}.pack-info p{font-size:12px;color:var(--muted);margin-top:4px}
+.pack{display:flex;gap:12px;align-items:center;padding:13px 0;border-top:1px solid var(--line)}.pack:first-child{border-top:0}.pack-icon{width:46px;height:46px;border-radius:13px;background:#f6f2e8;display:grid;place-items:center;font-size:22px;flex-shrink:0}.pack-info{flex:1;min-width:0}.pack-info p{font-size:12px;color:var(--muted);margin-top:4px}.custom-pack-tools{display:grid;grid-template-columns:1fr auto;gap:8px;margin:14px 0}.custom-pack-tools input,.custom-pack-tools select{min-width:0}.custom-pack-form{display:grid;gap:9px;margin-bottom:14px}.custom-pack-form .fields{display:grid;grid-template-columns:1fr 100px;gap:8px}.custom-pack-form input,.custom-pack-form select{width:100%}
 .flash{min-height:245px;display:flex;flex-direction:column;justify-content:center;text-align:center;align-items:center;gap:9px}.flash-word{font-size:34px;font-weight:750;letter-spacing:-.8px}.flash-answer{font-size:19px}.progressbar{height:7px;background:#e8e8ed;border-radius:9px;overflow:hidden}.progressbar span{display:block;height:100%;background:var(--yellow);border-radius:9px}
 .choice{display:block;width:100%;text-align:left;padding:13px;border-radius:11px;background:#f5f5f8;margin:8px 0;border:1px solid transparent}.choice.selected{border-color:var(--yellow);background:#fff8e8}.choice.correct{border-color:#45a66a;background:#eef9f1}.choice.wrong{border-color:#d66;background:#fff1f1}
 .result{padding:12px;border-radius:11px;background:#f5f5f8;margin-top:10px;font-size:13px;line-height:1.45}
 .badge{font-size:11px;color:#6f6f75;background:#f1f1f5;border-radius:20px;padding:4px 8px}
 hr{border:0;border-top:1px solid var(--line);margin:14px 0}
+body[data-theme="dark"]{--bg:#15161a;--card:#22242a;--text:#f4f4f5;--muted:#a1a1aa;--line:#393b43;--field:#2b2d34;--soft:#30323a;--navbg:#202127ed;color-scheme:dark}body[data-theme="dark"] .pill{background:#42351d;color:#f5d58a}body[data-theme="dark"] .pack-icon{background:#343039}body[data-theme="dark"] .level{background:var(--card);color:var(--text)}body[data-theme="dark"] .choice,body[data-theme="dark"] .result{background:#30323a;color:var(--text)}body[data-theme="dark"] .choice.selected{background:#41351f}body[data-theme="dark"] .choice.correct{background:#203b2b}body[data-theme="dark"] .choice.wrong{background:#452727}body[data-theme="dark"] .badge{background:#383a42;color:#ddd}body[data-theme="dark"] .bottom{border-color:var(--line)}body[data-theme="dark"] .card[style*="#fff9e9"]{background:#393222!important}body[data-photo="1"]{background-size:cover;background-position:center;background-attachment:fixed}body[data-photo="1"] .card{background:color-mix(in srgb,var(--card) 91%,transparent);backdrop-filter:blur(8px)}body[data-photo="1"] .bottom{backdrop-filter:blur(18px)}.theme-swatches{display:flex;gap:10px;flex-wrap:wrap}.theme-swatch{width:36px;height:36px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 1px var(--line)}.theme-swatch:focus{outline:2px solid var(--text);outline-offset:3px}.settings-preview{padding:13px;border-radius:13px;background:var(--soft);color:var(--text);margin-top:10px}
 @media(min-width:600px){.app{padding-top:24px}.bottom{justify-content:center}.bottom button{flex:0 1 100px}}
 </style>
 </head>
@@ -48,7 +49,7 @@ hr{border:0;border-top:1px solid var(--line);margin:14px 0}
 
   <section class="card" id="cloudAccount" style="margin-bottom:14px">
     <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
-      <div><strong>☁️ Синхронизация</strong><div id="cloudStatus" class="muted" style="margin-top:4px">Увійди, щоб об’єднати словник на Mac та iPhone</div></div>
+      <div><strong>☁️ Синхронізація</strong><div id="cloudStatus" class="muted" style="margin-top:4px">Увійди, щоб синхронізувати словник між Mac та iPhone</div></div>
       <span class="pill" id="cloudBadge">Не підключено</span>
     </div>
     <div id="cloudLogin" style="margin-top:12px">
@@ -63,7 +64,7 @@ hr{border:0;border-top:1px solid var(--line);margin:14px 0}
   <section id="home" class="view active">
     <h1>My Vocabulary</h1><p class="sub">Твій особистий словник англійської ♡</p>
     <div class="card" style="background:#fff9e9">
-      <div class="muted">ТВОЁ СЛОВО СЕГОДНЯ</div>
+      <div class="muted">ТВОЄ СЛОВО СЬОГОДНІ</div>
       <div id="dailyWord" style="font-size:23px;font-weight:750;margin:8px 0">Почни збирати слова</div>
       <div id="dailyMeaning" class="muted">Кожне нове слово наближає тебе до мети.</div>
     </div>
@@ -72,46 +73,46 @@ hr{border:0;border-top:1px solid var(--line);margin:14px 0}
       <div class="card"><div class="accent">↻</div><div class="stat-num" id="reviewCount">0</div><div class="muted">Повторити</div></div>
     </div>
     <button class="primary full" onclick="show('quick')">＋ Швидко додати слово</button>
-    <div class="section-head"><h2>Продолжить обучение</h2><button class="ghost" onclick="show('library')">Все наборы →</button></div>
+    <div class="section-head"><h2>Продовжити навчання</h2><button class="ghost" onclick="show('library')">Усі набори →</button></div>
     <div class="card" id="homePacks"></div>
-    <div class="section-head"><h2>Последние слова</h2><button class="ghost" onclick="show('words')">Все →</button></div>
+    <div class="section-head"><h2>Останні слова</h2><button class="ghost" onclick="show('words')">Усі →</button></div>
     <div class="card" id="recentWords"></div>
   </section>
 
   <section id="words" class="view">
-    <h1>Мої слова</h1><p class="sub">Всё, что ты встретила и захотела запомнить</p>
-    <input id="searchAll" class="search" placeholder="⌕ Найти слово или перевод" oninput="renderWords()">
+    <h1>Мої слова</h1><p class="sub">Усе, що ти зустріла й захотіла запам’ятати</p>
+    <input id="searchAll" class="search" placeholder="⌕ Знайти слово або переклад" oninput="renderWords()">
     <div id="allWords" class="card"></div>
   </section>
 
   <section id="quick" class="view">
-    <h1>Швидкий запис</h1><p class="sub">Сначала сохрани — подробности можно добавить позже.</p>
+    <h1>Швидкий запис</h1><p class="sub">Спочатку збережи слово — подробиці можна додати пізніше.</p>
     <div class="card">
       <label for="quickEnglish">Слово або фраза англійською *</label>
-      <input id="quickEnglish" placeholder="Например, eventually" autocomplete="off" autocapitalize="none">
-      <label for="quickSource">Де зустріла? <span class="muted">(необязательно)</span></label>
-      <input id="quickSource" placeholder="Сериал, YouTube, книга…">
+      <input id="quickEnglish" placeholder="Наприклад, eventually" autocomplete="off" autocapitalize="none">
+      <label for="quickSource">Де зустріла? <span class="muted">(необов’язково)</span></label>
+      <input id="quickSource" placeholder="Серіал, YouTube, книжка…">
       <div class="actions"><button class="primary" onclick="quickSave()">Зберегти за секунду</button><button class="secondary" onclick="voiceInput()">🎙 Голосом</button></div>
-      <p class="note">Голосовой ввод зависит от поддержки распознавания речи браузером. На iPhone можно также воспользоваться диктовкой клавиатуры.</p>
+      <p class="note">Голосове введення залежить від підтримки розпізнавання мовлення браузером. На iPhone також можна скористатися диктуванням на клавіатурі.</p>
     </div>
     <div class="card">
-      <h3>После сохранения</h3>
-      <p class="muted">Можно будет дополнить переводом, транскрипцией и примерами. Запись уже останется в твоём словаре, даже если пока ничего больше не заполнено.</p>
+      <h3>Після збереження</h3>
+      <p class="muted">Пізніше можна буде додати переклад, транскрипцію та приклади. Запис уже залишиться у твоєму словничку, навіть якщо поки що більше нічого не заповнено.</p>
     </div>
   </section>
 
   <section id="add" class="view">
-    <h1>Новий запис</h1><p class="sub">Заполни подробности или отредактируй слово</p>
+    <h1>Новий запис</h1><p class="sub">Заповни подробиці або відредагуй слово</p>
     <div class="card">
-      <label for="english">Англійське слово або фраза *</label><input id="english" placeholder="Например, eventually">
+      <label for="english">Англійське слово або фраза *</label><input id="english" placeholder="Наприклад, eventually">
       <label for="ru">Переклад</label><input id="ru" placeholder="Переклад українською">
       <label for="ipa">Вимова / транскрипція</label><input id="ipa" placeholder="/ɪˈven.tʃu.ə.li/">
       <label for="example">Приклад англійською</label><textarea id="example" placeholder="Eventually, everything will be okay."></textarea>
-      <label for="exampleRu">Переклад прикладу</label><textarea id="exampleRu" placeholder="В конце концов всё будет хорошо."></textarea>
-      <label for="category">Папка</label><select id="category"><option>Загальні слова</option><option>Повсякденне життя</option><option>Робота й навчання</option><option>Подорожі</option><option>Емоції</option><option>Из сериалов и видео</option><option>Фрази та вирази</option></select>
-      <label for="source">Де зустріла? (необязательно)</label><input id="source" placeholder="Сериал, книга, разговор…">
+      <label for="exampleRu">Переклад прикладу</label><textarea id="exampleRu" placeholder="Зрештою все буде добре."></textarea>
+      <label for="category">Категорія</label><select id="category"><option>Загальні слова</option><option>Повсякденне життя</option><option>Робота й навчання</option><option>Подорожі</option><option>Емоції</option><option>Із серіалів і відео</option><option>Фрази та вирази</option></select>
+      <label for="source">Де зустріла? (необов’язково)</label><input id="source" placeholder="Серіал, книжка, розмова…">
       <div class="actions"><button class="primary" onclick="saveDetailed()">Зберегти слово</button><button class="secondary" id="autoFillBtn" onclick="lookupAll()">✨ Заповнити автоматично</button></div>
-      <p class="note">Автозаполнение предложит перевод, транскрипцию и пример с переводом. Перевір результат і за потреби виправ будь-які поля перед збереженням.</p>
+      <p class="note">Автоматичне заповнення запропонує переклад, транскрипцію та приклад із перекладом. Перевір результат і за потреби виправ будь-які поля перед збереженням.</p>
       <p class="note" id="autoFillStatus" aria-live="polite"></p>
     </div>
   </section>
@@ -124,9 +125,15 @@ hr{border:0;border-top:1px solid var(--line);margin:14px 0}
       <button class="level" onclick="filterLevel('B1')">B1<small>Intermediate</small></button>
       <button class="level" onclick="filterLevel('B2')">B2<small>Upper</small></button>
     </div>
-    <input id="packSearch" class="search" placeholder="⌕ Найти набор" oninput="renderPacks()">
+    <div class="card custom-pack-form">
+      <strong>＋ Створити власну добірку</strong>
+      <input id="newPackName" class="search" placeholder="Назва добірки, наприклад: Англійська для роботи" maxlength="50">
+      <div class="fields"><select id="newPackLevel"><option value="A1">A1 · Початковий</option><option value="A2" selected>A2 · Базовий</option><option value="B1">B1 · Середній</option><option value="B2">B2 · Вище середнього</option></select><select id="newPackIcon"><option>📚</option><option>💼</option><option>✈️</option><option>💬</option><option>❤️</option><option>🎓</option><option>🏠</option><option>⭐</option></select></div>
+      <button class="primary" onclick="createCustomPack()">Створити добірку</button>
+    </div>
+    <input id="packSearch" class="search" placeholder="⌕ Знайти добірку" oninput="renderPacks()">
     <div class="card" id="packList"></div>
-    <p class="note">Коллекции в этой стартовой версии — небольшие демонстрационные подборки. Их можно постепенно расширять и проверять по уровню CEFR.</p>
+    <p class="note">Добірки в цій початковій версії невеликі й демонстраційні. Їх можна поступово розширювати та перевіряти відповідно до рівня CEFR.</p>
   </section>
 
   <section id="pack" class="view">
@@ -138,30 +145,35 @@ hr{border:0;border-top:1px solid var(--line);margin:14px 0}
       <div class="actions"><button class="primary" onclick="startPackCards()">Вчити карточками</button><button class="secondary" onclick="startPackQuiz()">Пройти тест</button></div>
     </div>
     <div class="card" id="packWords"></div>
+    <div class="card" id="customPackTools" style="display:none">
+      <strong>Додати моє слово до добірки</strong>
+      <div class="custom-pack-tools"><select id="customWordSelect"></select><button class="primary" onclick="addWordToCustomPack()">Додати</button></div>
+      <button class="secondary" onclick="deleteCustomPack()">Видалити цю добірку</button>
+    </div>
   </section>
 
   <section id="cards" class="view">
-    <h1>Картки</h1><p class="sub">Вспоминай значение, а не просто перечитывай</p>
+    <h1>Картки</h1><p class="sub">Пригадуй значення, а не просто перечитуй</p>
     <div class="card">
       <label for="cardSource">Що повторюємо?</label>
-      <select id="cardSource" onchange="resetCards()"><option value="all">Мої слова</option><option value="due">Только на повторение</option></select>
+      <select id="cardSource" onchange="resetCards()"><option value="all">Мої слова</option><option value="due">Лише для повторення</option></select>
     </div>
-    <div class="card flash" id="flashcard"><div class="muted">Добавь слова или открой набор из библиотеки</div></div>
+    <div class="card flash" id="flashcard"><div class="muted">Додай слова або відкрий набір із бібліотеки</div></div>
     <div class="actions" style="justify-content:center"><button class="secondary" onclick="reveal()">Показати відповідь</button></div>
     <div class="actions" style="justify-content:center"><button class="secondary" onclick="rateCard(false)">Ещё повторить</button><button class="primary" onclick="rateCard(true)">Знаю ✓</button></div>
     <p class="note" id="cardHint" style="text-align:center"></p>
   </section>
 
   <section id="tests" class="view">
-    <h1>Тести</h1><p class="sub">Проверь, что действительно запомнила</p>
+    <h1>Тести</h1><p class="sub">Перевір, що справді запам’ятала</p>
     <div class="card">
       <label for="quizSource">Джерело слів</label>
-      <select id="quizSource"><option value="mine">Мої слова</option><option value="library">Текущий набор библиотеки</option></select>
+      <select id="quizSource"><option value="mine">Мої слова</option><option value="library">Поточний набір із бібліотеки</option></select>
       <label for="quizCount">Кількість запитань</label>
-      <select id="quizCount"><option value="5">5 вопросов</option><option value="10">10 вопросов</option><option value="20">20 вопросов</option></select>
+      <select id="quizCount"><option value="5">5 запитань</option><option value="10">10 запитань</option><option value="20">20 запитань</option></select>
       <button class="primary full" style="margin-top:14px" onclick="beginQuiz()">Почати тест</button>
     </div>
-    <div id="quizArea" class="card"><div class="empty">Выбери источник и начни тест ♡</div></div>
+    <div id="quizArea" class="card"><div class="empty">Обери джерело та почни тест ♡</div></div>
   </section>
 
   <section id="progress" class="view">
@@ -172,13 +184,33 @@ hr{border:0;border-top:1px solid var(--line);margin:14px 0}
       <div class="card"><div class="stat-num" id="pReview">0</div><div class="muted">Повторити</div></div>
       <div class="card"><div class="stat-num" id="pTests">0</div><div class="muted">Тестів пройдено</div></div>
     </div>
-    <div class="card"><h3>Твоя коллекция</h3><div id="progressText" class="muted"></div></div>
+    <div class="card"><h3>Твоя колекція</h3><div id="progressText" class="muted"></div></div>
     <div class="card">
       <h3>Резервна копія</h3><p class="muted">Експортуй слова у файл, щоб перенести їх або зберегти окремо.</p>
       <div class="actions"><button class="primary" onclick="exportData()">Завантажити резервну копію</button><button class="secondary" onclick="document.getElementById('importFile').click()">Імпортувати копію</button></div>
       <input id="importFile" type="file" accept="application/json" style="display:none" onchange="importData(event)">
     </div>
-    <div class="card"><h3>Установка на iPhone</h3><p class="muted">Открой файл в Safari, нажми «Поделиться» → «На экран Домой». При открытии из локального файла некоторые браузерные функции могут быть ограничены.</p></div>
+    <div class="card"><h3>Установка на iPhone</h3><p class="muted">Відкрий сайт у Safari, натисни «Поділитися» → «На початковий екран». Якщо відкрити локальний файл, деякі функції браузера можуть бути недоступними.</p></div>
+  </section>
+  <section id="settings" class="view">
+    <h1>Оформлення</h1><p class="sub">Налаштуй вигляд словничка під свій настрій</p>
+    <div class="card">
+      <h3>Режим інтерфейсу</h3>
+      <div class="actions"><button class="secondary" type="button" onclick="setAppearanceTheme('light')">☀️ Світлий</button><button class="secondary" type="button" onclick="setAppearanceTheme('dark')">🌙 Нічний</button><button class="secondary" type="button" onclick="setAppearanceTheme('system')">📱 Як на пристрої</button></div>
+      <p class="note">Вибір зберігається на цьому пристрої.</p>
+    </div>
+    <div class="card">
+      <h3>Колір теми</h3><p class="muted">Обери акцентний колір кнопок та виділень.</p>
+      <div class="theme-swatches" style="margin:13px 0"><button class="theme-swatch" aria-label="Золотий" style="background:#d69b24" onclick="setAccent('#d69b24')"></button><button class="theme-swatch" aria-label="Рожевий" style="background:#d66b91" onclick="setAccent('#d66b91')"></button><button class="theme-swatch" aria-label="Лавандовий" style="background:#8b79d6" onclick="setAccent('#8b79d6')"></button><button class="theme-swatch" aria-label="Блакитний" style="background:#4c91d8" onclick="setAccent('#4c91d8')"></button><button class="theme-swatch" aria-label="М'ятний" style="background:#399b83" onclick="setAccent('#399b83')"></button><button class="theme-swatch" aria-label="Кораловий" style="background:#df765e" onclick="setAccent('#df765e')"></button></div>
+      <label for="customAccent">Або обери власний колір</label><input id="customAccent" type="color" value="#d69b24" oninput="setAccent(this.value)" style="height:48px;padding:5px;max-width:100px">
+      <div class="settings-preview"><strong>Приклад оформлення</strong><div class="actions"><button class="primary">Кнопка</button><span class="accent">Виділений текст</span></div></div>
+    </div>
+    <div class="card">
+      <h3>Фото на фоні</h3><p class="muted">Завантаж фото з пристрою. Воно буде збережене локально в цьому браузері.</p>
+      <label for="backgroundPhoto">Обрати фото</label><input id="backgroundPhoto" type="file" accept="image/*" onchange="setBackgroundPhoto(event)">
+      <div class="actions"><button class="secondary" onclick="clearBackgroundPhoto()">Прибрати фото</button></div>
+      <p class="note" id="backgroundStatus">Для кращої читабельності картки матимуть напівпрозорий фон.</p>
+    </div>
   </section>
 </div>
 
@@ -190,32 +222,59 @@ hr{border:0;border-top:1px solid var(--line);margin:14px 0}
   <button data-view="cards" onclick="show('cards')"><b>▣</b>Картки</button>
   <button data-view="tests" onclick="show('tests')"><b>✓</b>Тести</button>
   <button data-view="progress" onclick="show('progress')"><b>◷</b>Прогрес</button>
+  <button data-view="settings" onclick="show('settings')"><b>⚙</b>Тема</button>
 </nav>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const KEY='myVocabularyNotesV1';
 const META='myVocabularyNotesV2meta';
-let words=[],meta={tests:0,knownIds:[],reviewIds:[]},activePack=null,packFilter='all',cardItems=[],cardIndex=0,cardRevealed=false,quiz=[],quizIndex=0,quizScore=0,quizAnswered=false;
+let words=[],meta={tests:0,knownIds:[],reviewIds:[]},activePack=null,packFilter='all',customPacks=[],cardItems=[],cardIndex=0,cardRevealed=false,quiz=[],quizIndex=0,quizScore=0,quizAnswered=false;
 try{words=JSON.parse(localStorage.getItem(KEY)||'[]');if(!Array.isArray(words))words=[]}catch(e){words=[]}
 try{meta={...meta,...JSON.parse(localStorage.getItem(META)||'{}')}}catch(e){}
+try{customPacks=JSON.parse(localStorage.getItem('myVocabularyCustomPacksV1')||'[]');if(!Array.isArray(customPacks))customPacks=[]}catch(e){customPacks=[]}
 const packs=[
-{id:'verbs-a1',title:'Основные глаголы',subtitle:'Самые нужные действия на каждый день',level:'A1',type:'Дієслова',icon:'⚡',words:[
-['be','быть','/biː/','I want to be happy.','Я хочу быть счастливой.'],['have','иметь','/hæv/','I have a new book.','У меня есть новая книга.'],['do','делать','/duː/','I do my homework.','Я делаю домашнее задание.'],['go','идти, ехать','/ɡoʊ/','I go to work by bus.','Я езжу на работу на автобусе.'],['come','приходить','/kʌm/','Come here, please.','Подойди сюда, пожалуйста.'],['make','делать, создавать','/meɪk/','Let’s make dinner.','Давай приготовим ужин.'],['get','получать','/ɡet/','I get up at seven.','Я встаю в семь.'],['know','знать','/noʊ/','I know the answer.','Я знаю ответ.'],['think','думать','/θɪŋk/','I think it is a good idea.','Я думаю, это хорошая идея.'],['want','хотеть','/wɑːnt/','I want some water.','Я хочу немного воды.']]},
-{id:'nouns-a1',title:'Базовые существительные',subtitle:'Люди, места и предметы вокруг нас',level:'A1',type:'Іменники',icon:'📘',words:[
-['person','человек','/ˈpɜːrsən/','She is a kind person.','Она добрый человек.'],['family','семья','/ˈfæməli/','My family is very important to me.','Моя семья очень важна для меня.'],['friend','друг','/frend/','My friend lives nearby.','Мой друг живёт неподалёку.'],['house','дом','/haʊs/','Their house is big.','Их дом большой.'],['room','комната','/ruːm/','My room is bright.','Моя комната светлая.'],['food','еда','/fuːd/','The food smells delicious.','Еда вкусно пахнет.'],['water','вода','/ˈwɔːtər/','Can I have some water?','Можно мне воды?'],['time','время','/taɪm/','I don’t have much time.','У меня не так много времени.'],['day','день','/deɪ/','Have a nice day!','Хорошего дня!'],['work','работа','/wɜːrk/','I have a lot of work today.','У меня сегодня много работы.']]},
-{id:'adjectives-a1',title:'Полезные прилагательные',subtitle:'Описывай людей, вещи и впечатления',level:'A1',type:'Прикметники',icon:'✨',words:[
-['good','хороший','/ɡʊd/','That sounds good.','Звучит хорошо.'],['bad','плохой','/bæd/','It was a bad day.','Это был плохой день.'],['big','большой','/bɪɡ/','They live in a big city.','Они живут в большом городе.'],['small','маленький','/smɔːl/','I need a small bag.','Мне нужна маленькая сумка.'],['beautiful','красивый','/ˈbjuːtɪfəl/','What a beautiful view!','Какой красивый вид!'],['easy','лёгкий','/ˈiːzi/','This exercise is easy.','Это упражнение лёгкое.'],['difficult','трудный','/ˈdɪfɪkəlt/','English spelling can be difficult.','Английское написание может быть трудным.'],['happy','счастливый','/ˈhæpi/','I feel happy today.','Сегодня я чувствую себя счастливой.'],['tired','уставший','/ˈtaɪərd/','I am tired after work.','Я устала после работы.'],['important','важный','/ɪmˈpɔːrtənt/','This is an important question.','Это важный вопрос.']]},
-{id:'travel-a2',title:'Английский для путешествий',subtitle:'Аэропорт, отель, транспорт и город',level:'A2',type:'Тематический',icon:'✈️',words:[
-['booking','бронирование','/ˈbʊkɪŋ/','I have a hotel booking.','У меня есть бронь отеля.'],['luggage','багаж','/ˈlʌɡɪdʒ/','Where can I collect my luggage?','Где я могу получить багаж?'],['departure','отправление','/dɪˈpɑːrtʃər/','The departure time has changed.','Время отправления изменилось.'],['arrival','прибытие','/əˈraɪvəl/','What is the arrival time?','Какое время прибытия?'],['platform','платформа','/ˈplætfɔːrm/','The train leaves from platform two.','Поезд отправляется со второй платформы.'],['reservation','резервирование, бронь','/ˌrezərˈveɪʃən/','I have a reservation for two.','У меня бронь на двоих.'],['single ticket','билет в одну сторону','','I need a single ticket to London.','Мне нужен билет в одну сторону до Лондона.'],['return ticket','билет туда и обратно','','A return ticket is cheaper.','Билет туда и обратно дешевле.']]},
-{id:'phrases-a2',title:'Фразы на каждый день',subtitle:'Естественные выражения для общения',level:'A2',type:'Фразы',icon:'💬',words:[
-['That makes sense.','Теперь понятно.','','Oh, that makes sense.','О, теперь понятно.'],['It depends.','Это зависит.','','It depends on the weather.','Это зависит от погоды.'],['I’m not sure.','Я не уверена.','','I’m not sure about that.','Я не уверена насчёт этого.'],['Sounds great!','Звучит отлично!','','Sounds great! Let’s do it.','Звучит отлично! Давай сделаем это.'],['Never mind.','Неважно; ничего страшного.','','Never mind, I found it.','Неважно, я нашла.'],['By the way','кстати','','By the way, how was your trip?','Кстати, как прошла твоя поездка?'],['As soon as possible','как можно скорее','','Please reply as soon as possible.','Пожалуйста, ответь как можно скорее.']]},
-{id:'phrasal-b1',title:'Фразові дієслова',subtitle:'Дієслова, которые часто встречаются в речи',level:'B1',type:'Фразові дієслова',icon:'🔗',words:[
-['find out','выяснить, узнать','','I need to find out the truth.','Мне нужно узнать правду.'],['give up','сдаваться, бросать','','Don’t give up on your dreams.','Не отказывайся от своих мечтаний.'],['look after','присматривать за','','She looks after her younger brother.','Она присматривает за младшим братом.'],['run out of','закончиться; исчерпать','','We have run out of milk.','У нас закончилось молоко.'],['put off','откладывать','','Don’t put off your plans.','Не откладывай свои планы.'],['get along','ладить','','I get along with my colleagues.','Я лажу со своими коллегами.'],['carry on','продолжать','','Please carry on with your work.','Пожалуйста, продолжай свою работу.']]},
-{id:'feelings-b1',title:'Емоції и чувства',subtitle:'Точнее говори о своём состоянии',level:'B1',type:'Тематический',icon:'💛',words:[
-['confident','уверенный','/ˈkɑːnfɪdənt/','She feels confident speaking English.','Она уверенно чувствует себя, говоря по-английски.'],['overwhelmed','перегруженный, подавленный','/ˌoʊvərˈwelmd/','I feel overwhelmed by all this work.','Я чувствую себя перегруженной из-за всей этой работы.'],['relieved','испытывающий облегчение','/rɪˈliːvd/','I was relieved to hear the news.','Я испытала облегчение, услышав эту новость.'],['disappointed','разочарованный','/ˌdɪsəˈpɔɪntɪd/','He was disappointed with the result.','Он был разочарован результатом.'],['grateful','благодарный','/ˈɡreɪtfəl/','I’m grateful for your help.','Я благодарна за твою помощь.']]},
-{id:'work-b2',title:'Работа и деловое общение',subtitle:'Лексика для профессиональных ситуаций',level:'B2',type:'Тематический',icon:'💼',words:[
-['negotiate','вести переговоры','/nɪˈɡoʊʃieɪt/','We need to negotiate the terms.','Нам нужно обсудить условия.'],['deadline','крайний срок','/ˈdedlaɪn/','The deadline is next Friday.','Крайний срок — следующая пятница.'],['efficient','эффективный','/ɪˈfɪʃənt/','We need a more efficient process.','Нам нужен более эффективный процесс.'],['prioritize','расставлять приоритеты','/praɪˈɔːrətaɪz/','I need to prioritize my tasks.','Мне нужно расставить приоритеты в задачах.'],['approach','подход','/əˈproʊtʃ/','We should try a different approach.','Нам стоит попробовать другой подход.']]},
+{id:'verbs-a1',title:'Основні дієслова',subtitle:'Найпотрібніші дії на щодень',level:'A1',type:'Дієслова',icon:'⚡',words:[
+['be','бути','/biː/','I want to be happy.','Я хочу бути щасливою.'],['have','мати','/hæv/','I have a new book.','У мене є нова книжка.'],['do','робити','/duː/','I do my homework.','Я роблю домашнє завдання.'],['go','іти, їхати','/ɡoʊ/','I go to work by bus.','Я їжджу на роботу автобусом.'],['come','приходити','/kʌm/','Come here, please.','Підійди сюди, будь ласка.'],['make','створювати','/meɪk/','Let’s make dinner.','Приготуймо вечерю.'],['get','отримувати','/ɡet/','I get up at seven.','Я прокидаюся о сьомій.'],['know','знати','/noʊ/','I know the answer.','Я знаю відповідь.'],['think','думати','/θɪŋk/','I think it is a good idea.','Я думаю, це гарна ідея.'],['want','хотіти','/wɑːnt/','I want some water.','Я хочу трохи води.']]},
+{id:'nouns-a1',title:'Базові іменники',subtitle:'Люди, місця та речі навколо нас',level:'A1',type:'Іменники',icon:'📘',words:[
+['person','людина','/ˈpɜːrsən/','She is a kind person.','Вона добра людина.'],['family','родина','/ˈfæməli/','My family is very important to me.','Моя родина дуже важлива для мене.'],['friend','друг','/frend/','My friend lives nearby.','Мій друг живе неподалік.'],['house','дім','/haʊs/','Their house is big.','Їхній дім великий.'],['room','кімната','/ruːm/','My room is bright.','Моя кімната світла.'],['food','їжа','/fuːd/','The food smells delicious.','Їжа смачно пахне.'],['water','вода','/ˈwɔːtər/','Can I have some water?','Можна мені води?'],['time','час','/taɪm/','I don’t have much time.','У мене не так багато часу.'],['day','день','/deɪ/','Have a nice day!','Гарного дня!'],['work','робота','/wɜːrk/','I have a lot of work today.','У мене сьогодні багато роботи.']]},
+{id:'adjectives-a1',title:'Корисні прикметники',subtitle:'Описуй людей, речі та враження',level:'A1',type:'Прикметники',icon:'✨',words:[
+['good','гарний','/ɡʊd/','That sounds good.','Звучить добре.'],['bad','поганий','/bæd/','It was a bad day.','Це був поганий день.'],['big','великий','/bɪɡ/','They live in a big city.','Вони живуть у великому місті.'],['small','маленький','/smɔːl/','I need a small bag.','Мені потрібна маленька сумка.'],['beautiful','гарний','/ˈbjuːtɪfəl/','What a beautiful view!','Який гарний краєвид!'],['easy','легкий','/ˈiːzi/','This exercise is easy.','Ця вправа легка.'],['difficult','складний','/ˈdɪfɪkəlt/','English spelling can be difficult.','Англійське написання може бути складним.'],['happy','щасливий','/ˈhæpi/','I feel happy today.','Сьогодні я почуваюся щасливою.'],['tired','втомлений','/ˈtaɪərd/','I am tired after work.','Я втомилася після роботи.'],['important','важливий','/ɪmˈpɔːrtənt/','This is an important question.','Це важливе запитання.']]},
+{id:'travel-a2',title:'Англійська для подорожей',subtitle:'Аеропорт, готель, транспорт і місто',level:'A2',type:'Тематична добірка',icon:'✈️',words:[
+['booking','бронювання','/ˈbʊkɪŋ/','I have a hotel booking.','У мене є бронювання готелю.'],['luggage','багаж','/ˈlʌɡɪdʒ/','Where can I collect my luggage?','Де я можу отримати багаж?'],['departure','відправлення','/dɪˈpɑːrtʃər/','The departure time has changed.','Час відправлення змінився.'],['arrival','прибуття','/əˈraɪvəl/','What is the arrival time?','О котрій прибуття?'],['platform','платформа','/ˈplætfɔːrm/','The train leaves from platform two.','Потяг відправляється з другої платформи.'],['reservation','резервування, бронювання','/ˌrezərˈveɪʃən/','I have a reservation for two.','У мене бронювання на двох.'],['single ticket','квиток в один бік','','I need a single ticket to London.','Мені потрібен квиток в один бік до Лондона.'],['return ticket','квиток туди й назад','','A return ticket is cheaper.','Квиток туди й назад дешевший.']]},
+{id:'phrases-a2',title:'Фрази на щодень',subtitle:'Природні вислови для спілкування',level:'A2',type:'Фрази',icon:'💬',words:[
+['That makes sense.','Тепер зрозуміло.','','Oh, that makes sense.','О, тепер зрозуміло.'],['It depends.','Це залежить.','','It depends on the weather.','Це залежить від погоди.'],['I’m not sure.','Я не впевнена.','','I’m not sure about that.','Я не впевнена щодо цього.'],['Sounds great!','Чудово звучить!','','Sounds great! Let’s do it.','Чудово звучить! Зробімо це.'],['Never mind.','Не має значення; нічого страшного.','','Never mind, I found it.','Нічого, я знайшла.'],['By the way','до речі','','By the way, how was your trip?','До речі, як минула твоя подорож?'],['As soon as possible','якомога швидше','','Please reply as soon as possible.','Будь ласка, відповідай якомога швидше.']]},
+{id:'phrasal-b1',title:'Фразові дієслова',subtitle:'Дієслова, які часто трапляються в мовленні',level:'B1',type:'Фразові дієслова',icon:'🔗',words:[
+['find out','з’ясувати, дізнатися','','I need to find out the truth.','Мені потрібно дізнатися правду.'],['give up','здаватися, кидати','','Don’t give up on your dreams.','Не відмовляйся від своїх мрій.'],['look after','доглядати за','','She looks after her younger brother.','Вона доглядає за молодшим братом.'],['run out of','закінчитися; вичерпати','','We have run out of milk.','У нас закінчилося молоко.'],['put off','відкладати','','Don’t put off your plans.','Не відкладай свої плани.'],['get along','ладнати','','I get along with my colleagues.','Я ладнаю зі своїми колегами.'],['carry on','продовжувати','','Please carry on with your work.','Будь ласка, продовжуй свою роботу.']]},
+{id:'feelings-b1',title:'Емоції та почуття',subtitle:'Точніше описуй свій стан',level:'B1',type:'Тематична добірка',icon:'💛',words:[
+['confident','упевнений','/ˈkɑːnfɪdənt/','She feels confident speaking English.','Вона впевнено почувається, коли говорить англійською.'],['overwhelmed','перевантажений, пригнічений','/ˌoʊvərˈwelmd/','I feel overwhelmed by all this work.','Я почуваюся перевантаженою через усю цю роботу.'],['relieved','той, хто відчуває полегшення','/rɪˈliːvd/','I was relieved to hear the news.','Я відчула полегшення, почувши цю новину.'],['disappointed','розчарований','/ˌdɪsəˈpɔɪntɪd/','He was disappointed with the result.','Він був розчарований результатом.'],['grateful','вдячний','/ˈɡreɪtfəl/','I’m grateful for your help.','Я вдячна за твою допомогу.']]},
+{id:'work-b2',title:'Робота та ділове спілкування',subtitle:'Лексика для професійних ситуацій',level:'B2',type:'Тематична добірка',icon:'💼',words:[
+['negotiate','вести переговори','/nɪˈɡoʊʃieɪt/','We need to negotiate the terms.','Нам потрібно обговорити умови.'],['deadline','кінцевий термін','/ˈdedlaɪn/','The deadline is next Friday.','Кінцевий термін — наступна п’ятниця.'],['efficient','ефективний','/ɪˈfɪʃənt/','We need a more efficient process.','Нам потрібен ефективніший процес.'],['prioritize','визначати пріоритети','/praɪˈɔːrətaɪz/','I need to prioritize my tasks.','Мені потрібно визначити пріоритети завдань.'],['approach','підхід','/əˈproʊtʃ/','We should try a different approach.','Нам варто спробувати інший підхід.']]},
+,{id:'food-a1',title:'Їжа та напої',subtitle:'Продукти, страви й напої',level:'A1',type:'Тематична добірка',icon:'🍎',words:[
+['bread','хліб','','I buy fresh bread every morning.','Я купую свіжий хліб щоранку.'],['cheese','сир','','Would you like some cheese?','Хочеш трохи сиру?'],['vegetables','овочі','','We should eat more vegetables.','Нам варто їсти більше овочів.'],['fruit','фрукти','','Fresh fruit is good for you.','Свіжі фрукти корисні для тебе.'],['breakfast','сніданок','','I usually have breakfast at eight.','Зазвичай я снідаю о восьмій.'],['lunch','обід','','Let’s have lunch together.','Пообідаймо разом.'],['dinner','вечеря','','What shall we cook for dinner?','Що приготуємо на вечерю?'],['thirsty','спраглий','','I’m thirsty. Can I have some water?','Я хочу пити. Можна води?']]},
+{id:'home-a1',title:'Дім і побут',subtitle:'Кімнати, меблі та домашні справи',level:'A1',type:'Тематична добірка',icon:'🏠',words:[
+['kitchen','кухня','','The kitchen is next to the living room.','Кухня поруч із вітальнею.'],['bedroom','спальня','','My bedroom is small but cozy.','Моя спальня маленька, але затишна.'],['ceiling','стеля','','The ceiling is white.','Стеля біла.'],['floor','підлога; поверх','','The floor needs cleaning.','Підлогу потрібно помити.'],['shelf','полиця','','Put the books on the shelf.','Постав книжки на полицю.'],['comfortable','зручний; комфортний','','This sofa is very comfortable.','Цей диван дуже зручний.'],['clean up','прибирати','','I need to clean up the kitchen.','Мені потрібно прибрати кухню.'],['do the laundry','прати','','I do the laundry on Sundays.','Я перу речі щонеділі.']]},
+{id:'shopping-a2',title:'Покупки та гроші',subtitle:'У магазині, ціни й оплата',level:'A2',type:'Тематична добірка',icon:'🛍️',words:[
+['price','ціна','','What is the price of this jacket?','Скільки коштує ця куртка?'],['cheap','дешевий','','This shop sells cheap clothes.','У цьому магазині продають недорогий одяг.'],['expensive','дорогий','','That restaurant is too expensive.','Той ресторан надто дорогий.'],['discount','знижка','','Is there a discount today?','Сьогодні є знижка?'],['receipt','чек','','Could I have a receipt, please?','Можна, будь ласка, чек?'],['cash','готівка','','Can I pay in cash?','Чи можу я заплатити готівкою?'],['refund','повернення коштів','','I’d like to ask for a refund.','Я хотіла б попросити повернути кошти.'],['fit','підходити за розміром','','These shoes don’t fit me.','Це взуття мені не підходить за розміром.']]},
+{id:'clothes-a2',title:'Одяг і зовнішність',subtitle:'Речі гардероба та опис людей',level:'A2',type:'Тематична добірка',icon:'👗',words:[
+['coat','пальто','','Put on your coat. It’s cold outside.','Одягни пальто. Надворі холодно.'],['sleeves','рукави','','This shirt has long sleeves.','У цієї сорочки довгі рукави.'],['trainers','кросівки','','I wear trainers every day.','Я ношу кросівки щодня.'],['pattern','візерунок','','I like the pattern on this dress.','Мені подобається візерунок на цій сукні.'],['plain','однотонний; простий','','I prefer plain T-shirts.','Я віддаю перевагу однотонним футболкам.'],['slim','стрункий','','He is tall and slim.','Він високий і стрункий.'],['appearance','зовнішність','','Appearance is not everything.','Зовнішність — це не все.'],['try on','приміряти','','Can I try this on?','Можна це приміряти?']]},
+{id:'health-a2',title:'Здоров’я та самопочуття',subtitle:'Самопочуття, симптоми й допомога',level:'A2',type:'Тематична добірка',icon:'🩺',words:[
+['headache','головний біль','','I have a terrible headache.','У мене сильний головний біль.'],['sore throat','біль у горлі','','I have a sore throat.','У мене болить горло.'],['cough','кашель; кашляти','','This cough won’t go away.','Цей кашель ніяк не минає.'],['fever','гарячка; температура','','She has a high fever.','У неї висока температура.'],['appointment','запис на прийом','','I have a doctor’s appointment tomorrow.','Завтра я записана до лікаря.'],['recover','одужувати','','I hope you recover soon.','Сподіваюся, ти скоро одужаєш.'],['painful','болісний','','The movement is painful.','Цей рух болісний.'],['feel better','почуватися краще','','I’m starting to feel better.','Я починаю почуватися краще.']]},
+{id:'weather-a2',title:'Погода й природа',subtitle:'Пори року, погода та довкілля',level:'A2',type:'Тематична добірка',icon:'🌦️',words:[
+['cloudy','хмарний','','It’s cloudy today.','Сьогодні хмарно.'],['windy','вітряний','','It’s too windy to go sailing.','Надто вітряно, щоб вирушати під вітрилом.'],['thunderstorm','гроза','','A thunderstorm is coming.','Наближається гроза.'],['forecast','прогноз','','Have you checked the weather forecast?','Ти перевірила прогноз погоди?'],['wildlife','дика природа','','The park is full of wildlife.','У парку багато диких тварин.'],['environment','довкілля','','We should protect the environment.','Нам слід захищати довкілля.'],['pollution','забруднення','','Air pollution is a serious problem.','Забруднення повітря — серйозна проблема.'],['sunrise','схід сонця','','We watched the sunrise.','Ми спостерігали за сходом сонця.']]},
+{id:'technology-b1',title:'Технології та інтернет',subtitle:'Цифрове життя й онлайн-спілкування',level:'B1',type:'Тематична добірка',icon:'📱',words:[
+['device','пристрій','','This device is easy to use.','Цим пристроєм легко користуватися.'],['update','оновлення; оновлювати','','You need to update the app.','Тобі потрібно оновити застосунок.'],['password','пароль','','Never share your password.','Ніколи не повідомляй свій пароль.'],['download','завантажувати','','You can download the file here.','Ти можеш завантажити файл тут.'],['upload','надсилати; завантажувати в мережу','','Please upload your photo.','Будь ласка, завантаж своє фото.'],['connection','з’єднання; зв’язок','','The internet connection is slow.','Інтернет-з’єднання повільне.'],['privacy','конфіденційність','','Online privacy is important.','Конфіденційність в інтернеті важлива.'],['settings','налаштування','','Open the settings menu.','Відкрий меню налаштувань.']]},
+{id:'communication-b1',title:'Спілкування та знайомства',subtitle:'Розмови, знайомства й взаємодія',level:'B1',type:'Тематична добірка',icon:'💬',words:[
+['get to know','пізнавати; знайомитися','','I’d like to get to know you better.','Я хотіла б познайомитися з тобою ближче.'],['get in touch','зв’язатися','','Let’s keep in touch.','Залишаймося на зв’язку.'],['introduce','представляти; знайомити','','Let me introduce my friend.','Дозволь представити мого друга.'],['interrupt','перебивати','','Sorry to interrupt you.','Вибач, що перебиваю.'],['mention','згадувати','','He didn’t mention the meeting.','Він не згадав про зустріч.'],['point out','звертати увагу; зазначати','','She pointed out a small mistake.','Вона звернула увагу на невелику помилку.'],['agree','погоджуватися','','I completely agree with you.','Я цілком із тобою погоджуюся.'],['disagree','не погоджуватися','','I’m afraid I disagree.','Боюся, я не погоджуюся.']]},
+{id:'study-b1',title:'Навчання та університет',subtitle:'Заняття, завдання й академічна лексика',level:'B1',type:'Тематична добірка',icon:'🎓',words:[
+['assignment','завдання','','I have to finish my assignment.','Мені потрібно завершити завдання.'],['lecture','лекція','','The lecture starts at nine.','Лекція починається о дев’ятій.'],['deadline','кінцевий термін','','The deadline is next Monday.','Кінцевий термін — наступний понеділок.'],['research','дослідження; досліджувати','','I’m doing research for my project.','Я проводжу дослідження для свого проєкту.'],['revise','повторювати матеріал','','I need to revise for the exam.','Мені потрібно повторити матеріал до іспиту.'],['take notes','робити нотатки','','I always take notes in class.','Я завжди роблю нотатки на заняттях.'],['pass an exam','скласти іспит','','She hopes to pass the exam.','Вона сподівається скласти іспит.'],['improve','покращувати','','Reading helps improve your vocabulary.','Читання допомагає покращити словниковий запас.']]},
+{id:'hobbies-a2',title:'Хобі та вільний час',subtitle:'Захоплення, спорт і відпочинок',level:'A2',type:'Тематична добірка',icon:'🎨',words:[
+['knit','в’язати','','My grandmother taught me to knit.','Бабуся навчила мене в’язати.'],['hiking','піші походи','','We go hiking every summer.','Ми ходимо в походи щоліта.'],['photography','фотографія','','Photography is my favourite hobby.','Фотографія — моє улюблене захоплення.'],['board game','настільна гра','','Let’s play a board game.','Зіграємо в настільну гру.'],['gardening','садівництво','','Gardening helps me relax.','Садівництво допомагає мені розслабитися.'],['practice','тренуватися; практикуватися','','I practice the piano every day.','Я граю на піаніно щодня.'],['creative','творчий','','She is a very creative person.','Вона дуже творча людина.'],['spare time','вільний час','','What do you do in your spare time?','Що ти робиш у вільний час?']]},
+{id:'city-a2',title:'Місто й транспорт',subtitle:'Міські місця та пересування',level:'A2',type:'Тематична добірка',icon:'🚗',words:[
+['crossroads','перехрестя','','Turn left at the crossroads.','Поверни ліворуч на перехресті.'],['pedestrian','пішохід','','Drivers must watch for pedestrians.','Водії мають стежити за пішоходами.'],['traffic jam','затори','','I was late because of a traffic jam.','Я запізнилася через затор.'],['underground','метро','','We took the underground to the centre.','Ми дісталися центру метро.'],['neighbourhood','район; околиця','','It’s a quiet neighbourhood.','Це тихий район.'],['turn right','повернути праворуч','','Turn right after the bank.','Поверни праворуч після банку.'],['get off','виходити з транспорту','','We get off at the next stop.','Ми виходимо на наступній зупинці.'],['on foot','пішки','','I usually go to work on foot.','Зазвичай я ходжу на роботу пішки.']]},
+{id:'daily-routine-a1',title:'Щоденні справи',subtitle:'Ранок, день і вечір англійською',level:'A1',type:'Тематична добірка',icon:'⏰',words:[
+['wake up','прокидатися','','I wake up at seven.','Я прокидаюся о сьомій.'],['get dressed','одягатися','','I get dressed after breakfast.','Я одягаюся після сніданку.'],['brush my teeth','чистити зуби','','I brush my teeth twice a day.','Я чищу зуби двічі на день.'],['commute','добиратися на роботу чи навчання','','I commute by train.','Я добираюся на роботу потягом.'],['take a break','робити перерву','','Let’s take a short break.','Зробімо коротку перерву.'],['cook','готувати','','I cook dinner at home.','Я готую вечерю вдома.'],['fall asleep','засинати','','I fall asleep quickly.','Я швидко засинаю.'],['usually','зазвичай','','I usually read before bed.','Зазвичай я читаю перед сном.']]}
+
 ];
 
 const SUPABASE_URL='https://kdimrvwetqvyndflloqh.supabase.co';
@@ -257,27 +316,27 @@ async function cloudSync(){
     }
     localStorage.setItem(KEY,JSON.stringify(words));
     renderAll();
-    cloudUi('Синхронізовано · '+words.length+' слов','У хмарі',true);
+    cloudUi('Синхронізовано · '+words.length+' слів','У хмарі',true);
   }catch(e){
     console.error('Cloud sync:',e);
-    cloudUi('Помилка синхронізації: '+(e.message||'проверь настройки таблицы'),'Помилка',true);
+    cloudUi('Помилка синхронізації: '+(e.message||'перевір налаштування таблиці'),'Помилка',true);
   }finally{syncing=false}
 }
 function scheduleCloudSync(){if(!cloudUser)return;clearTimeout(syncTimer);syncTimer=setTimeout(cloudSync,900)}
 async function initCloud(){
-  if(!sb){cloudUi('Не загрузилась библиотека облака. Проверь интернет.','Помилка');return}
+  if(!sb){cloudUi('Не вдалося завантажити бібліотеку хмарного сервісу. Перевір інтернет-з’єднання.','Помилка');return}
   const {data:{session}}=await sb.auth.getSession();
-  if(session?.user){cloudUser=session.user;cloudUi('Вход выполнен: '+session.user.email,'Підключено',true);await cloudSync()}
+  if(session?.user){cloudUser=session.user;cloudUi('Вхід виконано: '+session.user.email,'Підключено',true);await cloudSync()}
   sb.auth.onAuthStateChange((event,session)=>{
-    if(session?.user){cloudUser=session.user;cloudUi('Вход выполнен: '+session.user.email,'Підключено',true);setTimeout(cloudSync,0)}
+    if(session?.user){cloudUser=session.user;cloudUi('Вхід виконано: '+session.user.email,'Підключено',true);setTimeout(cloudSync,0)}
     else{cloudUser=null;cloudUi('Увійди, щоб синхронізувати Mac та iPhone','Не підключено',false)}
   });
 }
 
-function persist(){localStorage.setItem(KEY,JSON.stringify(words));localStorage.setItem(META,JSON.stringify(meta));renderAll();scheduleCloudSync()}
+function persist(){localStorage.setItem(KEY,JSON.stringify(words));localStorage.setItem(META,JSON.stringify(meta));localStorage.setItem('myVocabularyCustomPacksV1',JSON.stringify(customPacks));renderAll();scheduleCloudSync()}
 function show(id){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bottom button').forEach(x=>x.classList.toggle('active',x.dataset.view===id));if(id==='cards')resetCards();if(id==='library')renderPacks();renderAll()}
 function addWord(obj){let existing=words.find(w=>w.en.toLowerCase()===obj.en.toLowerCase());if(existing){Object.assign(existing,Object.fromEntries(Object.entries(obj).filter(([k,v])=>v!==''&&v!=null)));return existing}let w={id:Date.now().toString()+Math.random().toString(16).slice(2,6),ru:'',ipa:'',example:'',exampleRu:'',category:'Загальні слова',favorite:false,status:'new',createdAt:Date.now(),...obj};words.unshift(w);return w}
-function quickSave(){let en=document.getElementById('quickEnglish').value.trim();if(!en){alert('Введи слово або фразу');return}let source=document.getElementById('quickSource').value.trim();addWord({en,source,category:source?'Из сериалов и видео':'Загальні слова'});document.getElementById('quickEnglish').value='';document.getElementById('quickSource').value='';persist();alert('Слово збережено ♡');show('words')}
+function quickSave(){let en=document.getElementById('quickEnglish').value.trim();if(!en){alert('Введи слово або фразу');return}let source=document.getElementById('quickSource').value.trim();addWord({en,source,category:source?'Із серіалів і відео':'Загальні слова'});document.getElementById('quickEnglish').value='';document.getElementById('quickSource').value='';persist();alert('Слово збережено ♡');show('words')}
 function saveDetailed(){let en=document.getElementById('english').value.trim();if(!en){alert('Введи англійське слово');return}addWord({en,ru:val('ru'),ipa:val('ipa'),example:val('example'),exampleRu:val('exampleRu'),category:val('category'),source:val('source')});['english','ru','ipa','example','exampleRu','source'].forEach(id=>document.getElementById(id).value='');persist();show('words')}
 function val(id){return document.getElementById(id).value.trim()}
 async function fetchWithTimeout(url, ms=12000){
@@ -341,55 +400,69 @@ async function lookupAll(){
       if(audio){
         let audioButton=document.getElementById('dictionaryAudio');
         if(!audioButton){
-          audioButton=document.createElement('button');audioButton.id='dictionaryAudio';audioButton.className='secondary';audioButton.type='button';audioButton.textContent='🔊 Прослушать произношение';
+          audioButton=document.createElement('button');audioButton.id='dictionaryAudio';audioButton.className='secondary';audioButton.type='button';audioButton.textContent='🔊 Прослухати вимову';
           btn.parentElement.appendChild(audioButton);
         }
         audioButton.onclick=()=>{const a=new Audio(audio);a.play().catch(()=>speak(en))};
         found.push('аудио');
       }
-    }else if(response.status===404){problems.push('слово не найдено в словаре')}
-    else{problems.push('словарь временно недоступен')}
-  }catch(e){problems.push('не удалось подключиться к словарю')}
+    }else if(response.status===404){problems.push('слово не знайдено у словнику')}
+    else{problems.push('словник тимчасово недоступний')}
+  }catch(e){problems.push('не вдалося підключитися до словника')}
   btn.disabled=false;btn.textContent=previous;
   if(status){
     if(found.length){
-      status.textContent='Заповнено: '+found.join(', ')+'.'+(problems.length?' Не получено: '+problems.join(', ')+'.':'')+' Перевір і за потреби виправ поля.';
+      status.textContent='Заповнено: '+found.join(', ')+'.'+(problems.length?' Не вдалося отримати: '+problems.join(', ')+'.':'')+' Перевір і за потреби виправ поля.';
     }else{
-      status.textContent='Автозаполнение не получило данных ('+(problems.join(', ')||'нет ответа от сервисов')+'). Проверь интернет и открой файл в Safari, затем попробуй ещё раз.';
+      status.textContent='Автоматичне заповнення не отримало даних ('+(problems.join(', ')||'немає відповіді від сервісів')+'). Перевір інтернет і відкрий сайт у Safari, а потім спробуй ще раз.';
     }
   }
   if(!found.length)alert('Не вдалося отримати дані. Перевір інтернет-з’єднання. Якщо файл відкрито у вбудованому переглядачі, спробуй відкрити його в Safari.');
 }
-function voiceInput(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('Распознавание речи недоступно в этом браузере. Используй диктовку клавиатуры iPhone.');return}let rec=new SR();rec.lang='en-US';rec.onresult=e=>document.getElementById('quickEnglish').value=e.results[0][0].transcript;rec.onerror=()=>alert('Не удалось распознать слово. Попробуй ещё раз.');rec.start()}
+function voiceInput(){let SR=window.SpeechRecognition||window.webkitSpeechRecognition;if(!SR){alert('Розпізнавання мовлення недоступне в цьому браузері. Скористайся диктуванням на клавіатурі iPhone.');return}let rec=new SR();rec.lang='en-US';rec.onresult=e=>document.getElementById('quickEnglish').value=e.results[0][0].transcript;rec.onerror=()=>alert('Не вдалося розпізнати слово. Спробуй ще раз.');rec.start()}
 function speak(s){if('speechSynthesis'in window){speechSynthesis.cancel();let u=new SpeechSynthesisUtterance(s);u.lang='en-US';speechSynthesis.speak(u)}}
-function row(w){return `<div class="word-row"><div style="min-width:0;flex:1"><div class="word">${esc(w.en)}</div><div class="translation">${esc(w.ru||'Переклад ще не додано')} ${w.status==='known'?'· ✓ знаю':''}</div></div><div class="row-actions"><button class="icon-btn" title="Озвучить" onclick="speak(${js(w.en)})">🔊</button><button class="icon-btn" title="Редактировать" onclick="editWord('${w.id}')">✎</button><button class="icon-btn" title="Обране" onclick="favorite('${w.id}')">${w.favorite?'★':'☆'}</button></div></div>`}
-function renderWords(){let q=(document.getElementById('searchAll')?.value||'').toLowerCase();let filtered=words.filter(w=>(w.en+' '+(w.ru||'')+' '+(w.category||'')).toLowerCase().includes(q));document.getElementById('allWords').innerHTML=filtered.length?filtered.map(row).join(''):'<div class="empty">Тут ще немає слів. Додай перше ♡</div>';document.getElementById('recentWords').innerHTML=words.slice(0,4).map(row).join('')||'<div class="empty">Твой словарик ждёт первое слово ♡</div>'}
-function editWord(id){let w=words.find(x=>x.id===id);if(!w)return;document.getElementById('english').value=w.en;document.getElementById('ru').value=w.ru||'';document.getElementById('ipa').value=w.ipa||'';document.getElementById('example').value=w.example||'';document.getElementById('exampleRu').value=w.exampleRu||'';document.getElementById('category').value=w.category||'Загальні слова';document.getElementById('source').value=w.source||'';let btn=document.querySelector('#add .primary');btn.textContent='Сохранить изменения';btn.onclick=()=>{w.en=val('english');w.ru=val('ru');w.ipa=val('ipa');w.example=val('example');w.exampleRu=val('exampleRu');w.category=val('category');w.source=val('source');btn.textContent='Зберегти слово';btn.onclick=saveDetailed;persist();show('words')};show('add')}
+function row(w){return `<div class="word-row"><div style="min-width:0;flex:1"><div class="word">${esc(w.en)}</div><div class="translation">${esc(w.ru||'Переклад ще не додано')} ${w.status==='known'?'· ✓ знаю':''}</div></div><div class="row-actions"><button class="icon-btn" title="Відтворити вимову" onclick="speak(${js(w.en)})">🔊</button><button class="icon-btn" title="Редагувати" onclick="editWord('${w.id}')">✎</button><button class="icon-btn" title="Обране" onclick="favorite('${w.id}')">${w.favorite?'★':'☆'}</button></div></div>`}
+function renderWords(){let q=(document.getElementById('searchAll')?.value||'').toLowerCase();let filtered=words.filter(w=>(w.en+' '+(w.ru||'')+' '+(w.category||'')).toLowerCase().includes(q));document.getElementById('allWords').innerHTML=filtered.length?filtered.map(row).join(''):'<div class="empty">Тут ще немає слів. Додай перше ♡</div>';document.getElementById('recentWords').innerHTML=words.slice(0,4).map(row).join('')||'<div class="empty">Твій словничок чекає перше слово ♡</div>'}
+function editWord(id){let w=words.find(x=>x.id===id);if(!w)return;document.getElementById('english').value=w.en;document.getElementById('ru').value=w.ru||'';document.getElementById('ipa').value=w.ipa||'';document.getElementById('example').value=w.example||'';document.getElementById('exampleRu').value=w.exampleRu||'';document.getElementById('category').value=w.category||'Загальні слова';document.getElementById('source').value=w.source||'';let btn=document.querySelector('#add .primary');btn.textContent='Зберегти зміни';btn.onclick=()=>{w.en=val('english');w.ru=val('ru');w.ipa=val('ipa');w.example=val('example');w.exampleRu=val('exampleRu');w.category=val('category');w.source=val('source');btn.textContent='Зберегти слово';btn.onclick=saveDetailed;persist();show('words')};show('add')}
 function favorite(id){let w=words.find(x=>x.id===id);if(w){w.favorite=!w.favorite;persist()}}
-function removeWord(id){if(confirm('Удалить это слово?')){words=words.filter(x=>x.id!==id);persist()}}
+function removeWord(id){if(confirm('Видалити це слово?')){words=words.filter(x=>x.id!==id);persist()}}
 function filterLevel(l){packFilter=packFilter===l?'all':l;renderPacks()}
-function renderPacks(){let q=(document.getElementById('packSearch')?.value||'').toLowerCase();let list=packs.filter(p=>(packFilter==='all'||p.level===packFilter)&&(p.title+' '+p.level+' '+p.type).toLowerCase().includes(q));document.getElementById('packList').innerHTML=list.map(p=>`<div class="pack"><div class="pack-icon">${p.icon}</div><div class="pack-info"><strong>${esc(p.title)}</strong><p>${p.level} · ${p.words.length} слов в стартовой подборке · ${esc(p.type)}</p></div><button class="secondary" onclick="openPack('${p.id}')">Открыть</button></div>`).join('')||'<div class="empty">Нічого не знайдено</div>'}
-function openPack(id){activePack=packs.find(p=>p.id===id);if(!activePack)return;document.getElementById('packTitle').textContent=activePack.title;document.getElementById('packSubtitle').textContent=activePack.level+' · '+activePack.subtitle;let known=activePack.words.filter(a=>words.some(w=>w.en.toLowerCase()===a[0].toLowerCase()&&w.status==='known')).length;document.getElementById('packProgress').textContent=known+' из '+activePack.words.length+' отмечено как выученное';document.getElementById('packBar').style.width=(known/activePack.words.length*100)+'%';document.getElementById('packWords').innerHTML=activePack.words.map(a=>{let saved=words.find(w=>w.en.toLowerCase()===a[0].toLowerCase());return `<div class="word-row"><div style="flex:1"><div class="word">${esc(a[0])}</div><div class="translation">${esc(a[1])} ${a[2]?'· '+esc(a[2]):''}</div></div><button class="secondary" onclick="addPackWord('${activePack.id}',${activePack.words.indexOf(a)})">${saved?'Додано':'＋ Добавить'}</button></div>`}).join('');show('pack')}
+function renderPacks(){let q=(document.getElementById('packSearch')?.value||'').toLowerCase();let built=packs.filter(p=>(packFilter==='all'||p.level===packFilter)&&(p.title+' '+p.level+' '+p.type).toLowerCase().includes(q));let own=customPacks.filter(p=>(packFilter==='all'||p.level===packFilter)&&(p.title+' '+p.level+' Власна добірка').toLowerCase().includes(q));let html=[...built.map(p=>`<div class="pack"><div class="pack-icon">${p.icon}</div><div class="pack-info"><strong>${esc(p.title)}</strong><p>${p.level} · ${p.words.length} слів · ${esc(p.type)}</p></div><button class="secondary" onclick="openPack('${p.id}')">Відкрити</button></div>`),...own.map(p=>`<div class="pack"><div class="pack-icon">${p.icon||'📚'}</div><div class="pack-info"><strong>${esc(p.title)}</strong><p>${p.level} · ${p.wordIds.length} моїх слів · Власна добірка</p></div><button class="secondary" onclick="openPack('${p.id}')">Відкрити</button></div>`)].join('');document.getElementById('packList').innerHTML=html||'<div class="empty">Нічого не знайдено</div>'}
+function createCustomPack(){let title=document.getElementById('newPackName').value.trim();if(!title){alert('Введи назву добірки');return}if([...packs,...customPacks].some(p=>p.title.toLowerCase()===title.toLowerCase())){alert('Добірка з такою назвою вже існує');return}let p={id:'custom-'+Date.now().toString(36),title,subtitle:'Твоя особиста добірка',level:document.getElementById('newPackLevel').value,type:'Власна добірка',icon:document.getElementById('newPackIcon').value,wordIds:[]};customPacks.unshift(p);document.getElementById('newPackName').value='';persist();renderPacks();openPack(p.id)}
+function openPack(id){activePack=packs.find(p=>p.id===id)||customPacks.find(p=>p.id===id);if(!activePack)return;let isCustom=id.startsWith('custom-');let items=isCustom?activePack.wordIds.map(wid=>words.find(w=>String(w.id)===String(wid))).filter(Boolean).map(w=>[w.en,w.ru,w.ipa,w.example,w.exampleRu]):activePack.words;document.getElementById('packTitle').textContent=activePack.title;document.getElementById('packSubtitle').textContent=activePack.level+' · '+activePack.subtitle;let known=items.filter(a=>words.some(w=>w.en.toLowerCase()===a[0].toLowerCase()&&w.status==='known')).length;document.getElementById('packProgress').textContent=known+' із '+items.length+' позначено як вивчене';document.getElementById('packBar').style.width=(items.length?known/items.length*100:0)+'%';document.getElementById('customPackTools').style.display=isCustom?'block':'none';document.getElementById('packWords').innerHTML=items.length?items.map((a,i)=>{let saved=words.find(w=>w.en.toLowerCase()===a[0].toLowerCase());return `<div class="word-row"><div style="flex:1"><div class="word">${esc(a[0])}</div><div class="translation">${esc(a[1]||'Переклад ще не додано')} ${a[2]?'· '+esc(a[2]):''}</div></div>${isCustom?`<button class="secondary" onclick="removeWordFromCustomPack('${activePack.id}','${saved?.id||''}')">Прибрати</button>`:`<button class="secondary" onclick="addPackWord('${activePack.id}',${i})">${saved?'Додано':'＋ Додати'}</button>`}</div>`}).join(''):'<div class="empty">У цій добірці поки немає слів. Додай їх зі свого словника нижче.</div>';if(isCustom){let sel=document.getElementById('customWordSelect');let available=words.filter(w=>!activePack.wordIds.includes(String(w.id)));sel.innerHTML=available.length?available.map(w=>`<option value="${esc(w.id)}">${esc(w.en)} — ${esc(w.ru||'без перекладу')}</option>`).join(''):'<option value="">Спочатку додай слова до словника</option>'}show('pack')}
+function addWordToCustomPack(){if(!activePack||!activePack.id.startsWith('custom-'))return;let id=document.getElementById('customWordSelect').value;if(!id)return; if(!activePack.wordIds.includes(String(id)))activePack.wordIds.push(String(id));persist();openPack(activePack.id)}
+function removeWordFromCustomPack(pid,wid){let p=customPacks.find(x=>x.id===pid);if(!p)return;p.wordIds=p.wordIds.filter(x=>String(x)!==String(wid));persist();openPack(pid)}
+function deleteCustomPack(){if(!activePack||!activePack.id.startsWith('custom-'))return;if(confirm('Видалити цю добірку? Самі слова залишаться у твоєму словнику.')){let id=activePack.id;customPacks=customPacks.filter(p=>p.id!==id);activePack=null;persist();show('library')}}
 function addPackWord(pid,i){let p=packs.find(x=>x.id===pid),a=p.words[i];addWord({en:a[0],ru:a[1],ipa:a[2],example:a[3],exampleRu:a[4],category:p.title,packId:p.id,level:p.level});persist();openPack(pid)}
-function getPackItems(){return activePack?activePack.words.map(a=>({en:a[0],ru:a[1],ipa:a[2],example:a[3],exampleRu:a[4]})):[]}
+function getPackItems(){if(!activePack)return[];if(activePack.id.startsWith('custom-'))return activePack.wordIds.map(id=>words.find(w=>String(w.id)===String(id))).filter(Boolean);return activePack.words.map(a=>({en:a[0],ru:a[1],ipa:a[2],example:a[3],exampleRu:a[4]}))}
 function startPackCards(){cardItems=getPackItems();cardIndex=0;cardRevealed=false;show('cards');drawCard()}
 function startPackQuiz(){show('tests');document.getElementById('quizSource').value='library';beginQuiz()}
 function resetCards(){if(!cardItems.length||!activePack){let due=document.getElementById('cardSource')?.value==='due';cardItems=words.filter(w=>!due||w.status!=='known')}cardIndex=0;cardRevealed=false;drawCard()}
-function drawCard(){let el=document.getElementById('flashcard');if(!el)return;if(!cardItems.length){el.innerHTML='<div class="muted">Пока нет слов для повторения. Добавь свои слова или выбери набор в библиотеке.</div>';document.getElementById('cardHint').textContent='';return}cardIndex=cardIndex%cardItems.length;let w=cardItems[cardIndex];el.innerHTML=`<div class="muted">КАРТОЧКА ${cardIndex+1} ИЗ ${cardItems.length}</div><div class="flash-word">${esc(w.en)}</div>${w.ipa?`<div class="muted">${esc(w.ipa)}</div>`:''}<div class="flash-answer">${cardRevealed?esc(w.ru||'Переклад не додано'):'Вспомни перевод этого слова'}</div>${cardRevealed&&w.example?`<div class="muted">${esc(w.example)}</div>`:''}`;document.getElementById('cardHint').textContent=cardRevealed?'':'Нажми «Показати відповідь», когда будешь готова.'}
+function drawCard(){let el=document.getElementById('flashcard');if(!el)return;if(!cardItems.length){el.innerHTML='<div class="muted">Поки немає слів для повторення. Додай свої слова або обери набір у бібліотеці.</div>';document.getElementById('cardHint').textContent='';return}cardIndex=cardIndex%cardItems.length;let w=cardItems[cardIndex];el.innerHTML=`<div class="muted">КАРТКА ${cardIndex+1} ІЗ ${cardItems.length}</div><div class="flash-word">${esc(w.en)}</div>${w.ipa?`<div class="muted">${esc(w.ipa)}</div>`:''}<div class="flash-answer">${cardRevealed?esc(w.ru||'Переклад не додано'):'Пригадай переклад цього слова'}</div>${cardRevealed&&w.example?`<div class="muted">${esc(w.example)}</div>`:''}`;document.getElementById('cardHint').textContent=cardRevealed?'':'Натисни «Показати відповідь», коли будеш готова.'}
 function reveal(){cardRevealed=true;drawCard()}
 function rateCard(known){if(!cardItems.length)return;let item=cardItems[cardIndex],w=words.find(x=>x.en.toLowerCase()===item.en.toLowerCase());if(w){w.status=known?'known':'review';w.lastReviewed=Date.now();if(known){meta.knownIds=[...new Set([...meta.knownIds,w.id])];meta.reviewIds=meta.reviewIds.filter(x=>x!==w.id)}else{meta.reviewIds=[...new Set([...meta.reviewIds,w.id])]}}cardIndex=(cardIndex+1)%cardItems.length;cardRevealed=false;persist();drawCard()}
-function beginQuiz(){let source=document.getElementById('quizSource').value;let items=source==='library'?(activePack?getPackItems():[]):words.slice();if(!items.length){document.getElementById('quizArea').innerHTML='<div class="empty">Сначала добавь слова или открой набор из библиотеки.</div>';return}items=shuffle(items).slice(0,Math.min(+document.getElementById('quizCount').value,items.length));quiz=items.map(w=>{let wrong=shuffle(items.filter(x=>x.en!==w.en)).slice(0,3).map(x=>x.ru||x.en);let opts=shuffle([w.ru||'Переклад не додано',...wrong]);return {w,opts,answer:w.ru||'Переклад не додано'}});quizIndex=0;quizScore=0;quizAnswered=false;drawQuiz()}
-function drawQuiz(){let area=document.getElementById('quizArea');if(!quiz.length)return;let q=quiz[quizIndex];area.innerHTML=`<div class="muted">ВОПРОС ${quizIndex+1} ИЗ ${quiz.length}</div><div class="progressbar" style="margin:9px 0 18px"><span style="width:${quizIndex/quiz.length*100}%"></span></div><div style="font-size:27px;font-weight:750;margin:12px 0">${esc(q.w.en)}</div><p class="muted">Выбери правильный перевод</p><div id="quizOptions">${q.opts.map((o,i)=>`<button class="choice" onclick="answerQuiz(${i})">${esc(o)}</button>`).join('')}</div><div id="quizFeedback"></div>`}
-function answerQuiz(i){if(quizAnswered)return;quizAnswered=true;let q=quiz[quizIndex],buttons=[...document.querySelectorAll('#quizOptions button')],correct=q.opts[i]===q.answer;if(correct)quizScore++;buttons.forEach((b,n)=>{b.disabled=true;if(q.opts[n]===q.answer)b.classList.add('correct');else if(n===i)b.classList.add('wrong')});document.getElementById('quizFeedback').innerHTML=`<div class="result">${correct?'Правильно! ✓':'Поки не зовсім.'} Правильный ответ: <b>${esc(q.answer)}</b>${q.w.example?'<br>'+esc(q.w.example):''}</div><button class="primary full" style="margin-top:12px" onclick="nextQuiz()"> ${quizIndex===quiz.length-1?'Завершити тест':'Наступне запитання →'} </button>`}
-function nextQuiz(){if(quizIndex<quiz.length-1){quizIndex++;quizAnswered=false;drawQuiz()}else{meta.tests=(meta.tests||0)+1;persist();document.getElementById('quizArea').innerHTML=`<div class="empty"><div style="font-size:34px">🎉</div><h2>Тест завершён!</h2><div style="font-size:28px;font-weight:750">${quizScore} / ${quiz.length}</div><p class="muted">Правильних відповідей</p><button class="primary" onclick="beginQuiz()">Пройти ещё раз</button></div>`}}
+function beginQuiz(){let source=document.getElementById('quizSource').value;let items=source==='library'?(activePack?getPackItems():[]):words.slice();if(!items.length){document.getElementById('quizArea').innerHTML='<div class="empty">Спочатку додай слова або відкрий набір із бібліотеки.</div>';return}items=shuffle(items).slice(0,Math.min(+document.getElementById('quizCount').value,items.length));quiz=items.map(w=>{let wrong=shuffle(items.filter(x=>x.en!==w.en)).slice(0,3).map(x=>x.ru||x.en);let opts=shuffle([w.ru||'Переклад не додано',...wrong]);return {w,opts,answer:w.ru||'Переклад не додано'}});quizIndex=0;quizScore=0;quizAnswered=false;drawQuiz()}
+function drawQuiz(){let area=document.getElementById('quizArea');if(!quiz.length)return;let q=quiz[quizIndex];area.innerHTML=`<div class="muted">ЗАПИТАННЯ ${quizIndex+1} ІЗ ${quiz.length}</div><div class="progressbar" style="margin:9px 0 18px"><span style="width:${quizIndex/quiz.length*100}%"></span></div><div style="font-size:27px;font-weight:750;margin:12px 0">${esc(q.w.en)}</div><p class="muted">Обери правильний переклад</p><div id="quizOptions">${q.opts.map((o,i)=>`<button class="choice" onclick="answerQuiz(${i})">${esc(o)}</button>`).join('')}</div><div id="quizFeedback"></div>`}
+function answerQuiz(i){if(quizAnswered)return;quizAnswered=true;let q=quiz[quizIndex],buttons=[...document.querySelectorAll('#quizOptions button')],correct=q.opts[i]===q.answer;if(correct)quizScore++;buttons.forEach((b,n)=>{b.disabled=true;if(q.opts[n]===q.answer)b.classList.add('correct');else if(n===i)b.classList.add('wrong')});document.getElementById('quizFeedback').innerHTML=`<div class="result">${correct?'Правильно! ✓':'Поки не зовсім.'} Правильна відповідь: <b>${esc(q.answer)}</b>${q.w.example?'<br>'+esc(q.w.example):''}</div><button class="primary full" style="margin-top:12px" onclick="nextQuiz()"> ${quizIndex===quiz.length-1?'Завершити тест':'Наступне запитання →'} </button>`}
+function nextQuiz(){if(quizIndex<quiz.length-1){quizIndex++;quizAnswered=false;drawQuiz()}else{meta.tests=(meta.tests||0)+1;persist();document.getElementById('quizArea').innerHTML=`<div class="empty"><div style="font-size:34px">🎉</div><h2>Тест завершено!</h2><div style="font-size:28px;font-weight:750">${quizScore} / ${quiz.length}</div><p class="muted">Правильних відповідей</p><button class="primary" onclick="beginQuiz()">Пройти ще раз</button></div>`}}
 function shuffle(a){return [...a].sort(()=>Math.random()-.5)}
-function renderAll(){let due=words.filter(w=>w.status!=='known').length;document.getElementById('totalCount').textContent=words.length;document.getElementById('reviewCount').textContent=due;renderWords();let featured=packs.slice(0,3);document.getElementById('homePacks').innerHTML=featured.map(p=>`<div class="pack"><div class="pack-icon">${p.icon}</div><div class="pack-info"><strong>${esc(p.title)}</strong><p>${p.level} · ${p.words.length} слов в подборке</p></div><button class="ghost" onclick="openPack('${p.id}')">Вчити →</button></div>`).join('');let daily=words.length?words[0]:packs[0].words[0];document.getElementById('dailyWord').textContent=daily.en;document.getElementById('dailyMeaning').textContent=daily.ru||'Добавь перевод, чтобы закрепить слово.';document.getElementById('pTotal').textContent=words.length;document.getElementById('pKnown').textContent=words.filter(w=>w.status==='known').length;document.getElementById('pReview').textContent=due;document.getElementById('pTests').textContent=meta.tests||0;document.getElementById('progressText').textContent=words.length?`У тебя уже ${words.length} ${plural(words.length,['слово','слова','слов'])}. Продолжай в своём темпе!`:'Твій шлях починається з першого слова.'}
+function renderAll(){let due=words.filter(w=>w.status!=='known').length;document.getElementById('totalCount').textContent=words.length;document.getElementById('reviewCount').textContent=due;renderWords();let featured=packs.slice(0,3);document.getElementById('homePacks').innerHTML=featured.map(p=>`<div class="pack"><div class="pack-icon">${p.icon}</div><div class="pack-info"><strong>${esc(p.title)}</strong><p>${p.level} · ${p.words.length} слів у добірці</p></div><button class="ghost" onclick="openPack('${p.id}')">Вивчати →</button></div>`).join('');let daily=words.length?words[0]:packs[0].words[0];document.getElementById('dailyWord').textContent=daily.en;document.getElementById('dailyMeaning').textContent=daily.ru||'Додай переклад, щоб закріпити слово.';document.getElementById('pTotal').textContent=words.length;document.getElementById('pKnown').textContent=words.filter(w=>w.status==='known').length;document.getElementById('pReview').textContent=due;document.getElementById('pTests').textContent=meta.tests||0;document.getElementById('progressText').textContent=words.length?`У тебе вже ${words.length} ${plural(words.length,['слово','слова','слів'])}. Продовжуй у своєму темпі!`:'Твій шлях починається з першого слова.'}
+const APPEARANCE_KEY='myVocabularyAppearanceV1';
+let appearance={theme:'system',accent:'#d69b24',background:''};
+try{appearance={...appearance,...JSON.parse(localStorage.getItem(APPEARANCE_KEY)||'{}')}}catch(e){}
+function saveAppearance(){try{localStorage.setItem(APPEARANCE_KEY,JSON.stringify(appearance))}catch(e){alert('Не вдалося зберегти оформлення. Спробуй фото меншого розміру.')}}
+function applyAppearance(){let dark=appearance.theme==='dark'||(appearance.theme==='system'&&window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches);document.body.dataset.theme=dark?'dark':'light';document.documentElement.style.setProperty('--yellow',appearance.accent||'#d69b24');if(appearance.background){document.body.dataset.photo='1';document.body.style.backgroundImage=`linear-gradient(#00000022,#00000022),url("${appearance.background}")`}else{document.body.dataset.photo='0';document.body.style.backgroundImage='none'}let colorMeta=document.querySelector('meta[name="theme-color"]');if(colorMeta)colorMeta.content=dark?'#15161a':'#f2f2f7';let picker=document.getElementById('customAccent');if(picker)picker.value=appearance.accent||'#d69b24'}
+function setAppearanceTheme(theme){appearance.theme=theme;saveAppearance();applyAppearance()}
+function setAccent(color){appearance.accent=color;saveAppearance();applyAppearance()}
+function setBackgroundPhoto(event){let file=event.target.files&&event.target.files[0];if(!file)return;if(!file.type.startsWith('image/')){alert('Будь ласка, обери файл зображення.');return}let reader=new FileReader();reader.onload=()=>{let img=new Image();img.onload=()=>{let canvas=document.createElement('canvas'),scale=Math.min(1,1400/Math.max(img.width,img.height));canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);appearance.background=canvas.toDataURL('image/jpeg',.72);saveAppearance();applyAppearance();let status=document.getElementById('backgroundStatus');if(status)status.textContent='Фото встановлено. Воно збережене в цьому браузері.'};img.onerror=()=>alert('Не вдалося відкрити це зображення.');img.src=reader.result};reader.readAsDataURL(file)}
+function clearBackgroundPhoto(){appearance.background='';saveAppearance();applyAppearance();document.getElementById('backgroundPhoto').value='';let status=document.getElementById('backgroundStatus');if(status)status.textContent='Фото фону прибрано.'}
+if(window.matchMedia){window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change',()=>{if(appearance.theme==='system')applyAppearance()})}
 function plural(n,forms){let x=n%100;if(x>=11&&x<=19)return forms[2];x=n%10;return x===1?forms[0]:x>=2&&x<=4?forms[1]:forms[2]}
-function exportData(){let data={version:2,exportedAt:new Date().toISOString(),words,meta};let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});let url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='my-vocabulary-backup.json';a.click();URL.revokeObjectURL(url)}
-function importData(e){let file=e.target.files[0];if(!file)return;let r=new FileReader();r.onload=()=>{try{let data=JSON.parse(r.result),incoming=Array.isArray(data)?data:data.words;if(!Array.isArray(incoming))throw Error();let merged=[...words];incoming.forEach(w=>{if(w.en&&!merged.some(x=>x.en.toLowerCase()===w.en.toLowerCase()))merged.push(w)});words=merged;if(data.meta)meta={...meta,...data.meta};persist();alert('Импорт завершён. Новые слова добавлены, дубликаты пропущены.')}catch(err){alert('Не удалось прочитать резервную копию.')}e.target.value=''};r.readAsText(file)}
+function exportData(){let data={version:3,exportedAt:new Date().toISOString(),words,meta,customPacks};let blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});let url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='my-vocabulary-backup.json';a.click();URL.revokeObjectURL(url)}
+function importData(e){let file=e.target.files[0];if(!file)return;let r=new FileReader();r.onload=()=>{try{let data=JSON.parse(r.result),incoming=Array.isArray(data)?data:data.words;if(!Array.isArray(incoming))throw Error();let merged=[...words];incoming.forEach(w=>{if(w.en&&!merged.some(x=>x.en.toLowerCase()===w.en.toLowerCase()))merged.push(w)});words=merged;if(data.meta)meta={...meta,...data.meta};if(Array.isArray(data.customPacks))customPacks=data.customPacks;persist();alert('Імпорт завершено. Нові слова додано, дублікати пропущено.')}catch(err){alert('Не вдалося прочитати резервну копію.')}e.target.value=''};r.readAsText(file)}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function js(s){return JSON.stringify(String(s||''))}
-renderAll();renderPacks();initCloud();
+applyAppearance();renderAll();renderPacks();initCloud();
 </script>
 </body>
 </html>
