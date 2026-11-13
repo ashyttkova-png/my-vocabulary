@@ -46,6 +46,20 @@ hr{border:0;border-top:1px solid var(--line);margin:14px 0}
 <div class="app">
   <div class="top"><span>MY ENGLISH SPACE</span><span>♡</span></div>
 
+  <section class="card" id="cloudAccount" style="margin-bottom:14px">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px">
+      <div><strong>☁️ Синхронизация</strong><div id="cloudStatus" class="muted" style="margin-top:4px">Войди, чтобы объединить словарь на Mac и iPhone</div></div>
+      <span class="pill" id="cloudBadge">Не подключено</span>
+    </div>
+    <div id="cloudLogin" style="margin-top:12px">
+      <label for="cloudEmail">Электронная почта</label>
+      <input id="cloudEmail" type="email" autocomplete="email" placeholder="name@example.com">
+      <div class="actions"><button class="primary" type="button" onclick="cloudSignIn()">Получить ссылку для входа</button></div>
+      <p class="note">Открой ссылку из письма на каждом устройстве. Используй один и тот же адрес почты.</p>
+    </div>
+    <div id="cloudLogout" style="display:none;margin-top:12px"><button class="secondary" type="button" onclick="cloudSignOut()">Выйти из аккаунта</button></div>
+  </section>
+
   <section id="home" class="view active">
     <h1>My Vocabulary</h1><p class="sub">Твой личный английский словарь ♡</p>
     <div class="card" style="background:#fff9e9">
@@ -178,6 +192,7 @@ hr{border:0;border-top:1px solid var(--line);margin:14px 0}
   <button data-view="progress" onclick="show('progress')"><b>◷</b>Прогресс</button>
 </nav>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 const KEY='myVocabularyNotesV1';
 const META='myVocabularyNotesV2meta';
@@ -202,7 +217,64 @@ const packs=[
 {id:'work-b2',title:'Работа и деловое общение',subtitle:'Лексика для профессиональных ситуаций',level:'B2',type:'Тематический',icon:'💼',words:[
 ['negotiate','вести переговоры','/nɪˈɡoʊʃieɪt/','We need to negotiate the terms.','Нам нужно обсудить условия.'],['deadline','крайний срок','/ˈdedlaɪn/','The deadline is next Friday.','Крайний срок — следующая пятница.'],['efficient','эффективный','/ɪˈfɪʃənt/','We need a more efficient process.','Нам нужен более эффективный процесс.'],['prioritize','расставлять приоритеты','/praɪˈɔːrətaɪz/','I need to prioritize my tasks.','Мне нужно расставить приоритеты в задачах.'],['approach','подход','/əˈproʊtʃ/','We should try a different approach.','Нам стоит попробовать другой подход.']]},
 ];
-function persist(){localStorage.setItem(KEY,JSON.stringify(words));localStorage.setItem(META,JSON.stringify(meta));renderAll()}
+
+const SUPABASE_URL='https://kdimrvwetqvyndflloqh.supabase.co';
+const SUPABASE_ANON_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtkaW1ydndldHF2eW5kZmxsb3FoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ1OTMwMjYsImV4cCI6MjExMDE2OTAyNn0.3-XhzccfETHai7jjfYVsWUj91HTo0Bvds0a9IkGUd98';
+let sb=null,cloudUser=null,syncTimer=null,syncing=false;
+try{if(window.supabase?.createClient)sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY)}catch(e){console.error(e)}
+function cloudUi(message,badge,logged=false){
+  document.getElementById('cloudStatus').textContent=message;
+  document.getElementById('cloudBadge').textContent=badge;
+  document.getElementById('cloudLogin').style.display=logged?'none':'block';
+  document.getElementById('cloudLogout').style.display=logged?'block':'none';
+}
+async function cloudSignIn(){
+  const email=document.getElementById('cloudEmail').value.trim();
+  if(!email){alert('Введи электронную почту');return}
+  if(!sb){alert('Не загрузилась библиотека синхронизации. Обнови страницу.');return}
+  cloudUi('Отправляю письмо…','Ожидание');
+  const {error}=await sb.auth.signInWithOtp({email,options:{emailRedirectTo:'https://ashyttkova-png.github.io/my-vocabulary/'}});
+  if(error){cloudUi('Ошибка: '+error.message,'Ошибка');return}
+  cloudUi('Письмо отправлено. Открой ссылку из письма на этом устройстве.','Проверь почту');
+}
+async function cloudSignOut(){if(sb)await sb.auth.signOut();cloudUser=null;cloudUi('Аккаунт отключён на этом устройстве.','Не подключено')}
+function cloudRow(w){return {user_id:cloudUser.id,local_id:String(w.id),en:w.en||'',ru:w.ru||'',ipa:w.ipa||'',example:w.example||'',example_ru:w.exampleRu||'',category:w.category||'Общие слова',source:w.source||'',favorite:!!w.favorite,known:w.status==='known'||w.known===true,created_at:w.createdAt?new Date(Number(w.createdAt)).toISOString():new Date().toISOString(),updated_at:new Date().toISOString()}}
+function localRow(r){return {id:String(r.local_id),en:r.en||'',ru:r.ru||'',ipa:r.ipa||'',example:r.example||'',exampleRu:r.example_ru||'',category:r.category||'Общие слова',source:r.source||'',favorite:!!r.favorite,status:r.known?'known':'new',createdAt:r.created_at?new Date(r.created_at).getTime():Date.now()}}
+async function cloudSync(){
+  if(!sb||!cloudUser||syncing)return;
+  syncing=true;
+  try{
+    const {data:remote,error}=await sb.from('vocabulary_words').select('*').eq('user_id',cloudUser.id);
+    if(error)throw error;
+    const localMap=new Map(words.map(w=>[String(w.id),w]));
+    const remoteMap=new Map((remote||[]).map(r=>[String(r.local_id),r]));
+    // Keep all local words; bring down any words that exist only in the cloud.
+    for(const r of (remote||[])){if(!localMap.has(String(r.local_id)))words.push(localRow(r))}
+    const payload=words.map(cloudRow);
+    if(payload.length){
+      const {error:upError}=await sb.from('vocabulary_words').upsert(payload,{onConflict:'user_id,local_id'});
+      if(upError)throw upError;
+    }
+    localStorage.setItem(KEY,JSON.stringify(words));
+    renderAll();
+    cloudUi('Синхронизировано · '+words.length+' слов','В облаке',true);
+  }catch(e){
+    console.error('Cloud sync:',e);
+    cloudUi('Ошибка синхронизации: '+(e.message||'проверь настройки таблицы'),'Ошибка',true);
+  }finally{syncing=false}
+}
+function scheduleCloudSync(){if(!cloudUser)return;clearTimeout(syncTimer);syncTimer=setTimeout(cloudSync,900)}
+async function initCloud(){
+  if(!sb){cloudUi('Не загрузилась библиотека облака. Проверь интернет.','Ошибка');return}
+  const {data:{session}}=await sb.auth.getSession();
+  if(session?.user){cloudUser=session.user;cloudUi('Вход выполнен: '+session.user.email,'Подключено',true);await cloudSync()}
+  sb.auth.onAuthStateChange((event,session)=>{
+    if(session?.user){cloudUser=session.user;cloudUi('Вход выполнен: '+session.user.email,'Подключено',true);setTimeout(cloudSync,0)}
+    else{cloudUser=null;cloudUi('Войди, чтобы синхронизировать Mac и iPhone','Не подключено',false)}
+  });
+}
+
+function persist(){localStorage.setItem(KEY,JSON.stringify(words));localStorage.setItem(META,JSON.stringify(meta));renderAll();scheduleCloudSync()}
 function show(id){document.querySelectorAll('.view').forEach(x=>x.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.bottom button').forEach(x=>x.classList.toggle('active',x.dataset.view===id));if(id==='cards')resetCards();if(id==='library')renderPacks();renderAll()}
 function addWord(obj){let existing=words.find(w=>w.en.toLowerCase()===obj.en.toLowerCase());if(existing){Object.assign(existing,Object.fromEntries(Object.entries(obj).filter(([k,v])=>v!==''&&v!=null)));return existing}let w={id:Date.now().toString()+Math.random().toString(16).slice(2,6),ru:'',ipa:'',example:'',exampleRu:'',category:'Общие слова',favorite:false,status:'new',createdAt:Date.now(),...obj};words.unshift(w);return w}
 function quickSave(){let en=document.getElementById('quickEnglish').value.trim();if(!en){alert('Введи слово или фразу');return}let source=document.getElementById('quickSource').value.trim();addWord({en,source,category:source?'Из сериалов и видео':'Общие слова'});document.getElementById('quickEnglish').value='';document.getElementById('quickSource').value='';persist();alert('Слово сохранено ♡');show('words')}
@@ -317,7 +389,7 @@ function exportData(){let data={version:2,exportedAt:new Date().toISOString(),wo
 function importData(e){let file=e.target.files[0];if(!file)return;let r=new FileReader();r.onload=()=>{try{let data=JSON.parse(r.result),incoming=Array.isArray(data)?data:data.words;if(!Array.isArray(incoming))throw Error();let merged=[...words];incoming.forEach(w=>{if(w.en&&!merged.some(x=>x.en.toLowerCase()===w.en.toLowerCase()))merged.push(w)});words=merged;if(data.meta)meta={...meta,...data.meta};persist();alert('Импорт завершён. Новые слова добавлены, дубликаты пропущены.')}catch(err){alert('Не удалось прочитать резервную копию.')}e.target.value=''};r.readAsText(file)}
 function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function js(s){return JSON.stringify(String(s||''))}
-renderAll();renderPacks();
+renderAll();renderPacks();initCloud();
 </script>
 </body>
 </html>
